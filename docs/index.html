@@ -1,5 +1,4 @@
-<!DOCTYPE html><html lang="fa" dir="rtl">
-<head>
+<!DOCTYPE html><html lang="fa" dir="rtl"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>پنل F0rc3Run</title>
@@ -83,6 +82,10 @@
       line-height: 2;
       white-space: pre-wrap;
     }
+    .logo {
+      width: 100px;
+      margin-bottom: 1rem;
+    }
   </style>
 </head>
 <body>
@@ -90,40 +93,62 @@
     <button onclick="setLang('fa')">🇮🇷 فارسی</button>
     <button onclick="setLang('en')">🇬🇧 English</button>
   </div>  <div id="content-fa">
+    <img class="logo" src="https://raw.githubusercontent.com/F0rc3Run/F0rc3Run-panel/main/docs/logo.png" alt="logo">
     <h1>پنل حرفه‌ای F0rc3Run</h1>
     <p>
       پروژه F0rc3Run با هدف <strong>دسترسی آزاد، رایگان و ایمن به اینترنت</strong> برای تمام ایرانیان ساخته شده است. این پنل به شما اجازه می‌دهد تا با کلیک روی یکی از پروتکل‌های زیر، جدیدترین لینک اشتراک مخصوص آن را دریافت کنید.
-    </p><div class="button-grid">
-  <a class="button" href="https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/splitted-by-protocol/vless/vless_part1.txt" target="_blank">VLESS</a>
-  <a class="button" href="https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/splitted-by-protocol/trojan/trojan_part1.txt" target="_blank">Trojan</a>
-  <a class="button" href="https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/splitted-by-protocol/ss/ss.txt" target="_blank">Shadowsocks</a>
-  <button class="button" onclick="getRandomSSTP()">SSTP</button>
-</div>
-
-<div id="sstp-result"></div>
-
-<div class="qr">
-  <h2>دریافت سریع با QR</h2>
-  <p>برای اسکن سریع لینک اشتراک هر پروتکل، از QRهای زیر استفاده کنید:</p>
-  <img src="https://api.qrserver.com/v1/create-qr-code/?data=https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/splitted-by-protocol/vless/vless_part1.txt&size=150x150" alt="VLESS QR">
-  <img src="https://api.qrserver.com/v1/create-qr-code/?data=https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/splitted-by-protocol/trojan/trojan_part1.txt&size=150x150" alt="Trojan QR">
-  <img src="https://api.qrserver.com/v1/create-qr-code/?data=https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/splitted-by-protocol/ss/ss.txt&size=150x150" alt="Shadowsocks QR">
-</div>
-
-<footer>
-  <p>
-    🤖 برای دریافت رایگان اشتراک‌ها در تلگرام، ربات ما را دنبال کنید:<br>
-    <a href="https://t.me/AttackAlertIR" target="_blank">@AttackAlertIR</a>
-  </p>
-  <p>
-    📦 سورس کامل پروژه در گیت‌هاب:<br>
-    <a href="https://github.com/F0rc3Run/F0rc3Run-panel" target="_blank">github.com/F0rc3Run/F0rc3Run-panel</a>
-  </p>
-  <p>
-    ❤️ به امید اینترنت آزاد برای همه‌ی مردم ایران 🌍
-  </p>
-</footer>
-
+    </p>
+    <div class="button-grid">
+      <a class="button" href="https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/splitted-by-protocol/vless/vless_part1.txt" target="_blank">VLESS</a>
+      <a class="button" href="https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/splitted-by-protocol/trojan/trojan_part1.txt" target="_blank">Trojan</a>
+      <a class="button" href="https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/splitted-by-protocol/ss/ss.txt" target="_blank">Shadowsocks</a>
+      <button class="button" onclick="getRandomSSTP()">SSTP</button>
+    </div>
+    <div id="sstp-result"></div>
+    <div class="qr">
+      <h2>دریافت سریع با QR</h2>
+      <p>برای اسکن سریع لینک اشتراک هر پروتکل، از QRهای زیر استفاده کنید:</p>
+      <img src="https://api.qrserver.com/v1/create-qr-code/?data=https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/splitted-by-protocol/vless/vless_part1.txt&size=150x150" alt="VLESS QR">
+      <img src="https://api.qrserver.com/v1/create-qr-code/?data=https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/splitted-by-protocol/trojan/trojan_part1.txt&size=150x150" alt="Trojan QR">
+      <img src="https://api.qrserver.com/v1/create-qr-code/?data=https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/splitted-by-protocol/ss/ss.txt&size=150x150" alt="Shadowsocks QR">
+    </div>
+    <footer>
+      <p>🤖 برای دریافت رایگان اشتراک‌ها در تلگرام، ربات ما را دنبال کنید:<br>
+        <a href="https://t.me/AttackAlertIR" target="_blank">@AttackAlertIR</a>
+      </p>
+      <p>📦 سورس کامل پروژه در گیت‌هاب:<br>
+        <a href="https://github.com/F0rc3Run/F0rc3Run-panel" target="_blank">github.com/F0rc3Run/F0rc3Run-panel</a>
+      </p>
+      <p>❤️ به امید اینترنت آزاد برای همه‌ی مردم ایران 🌍</p>
+    </footer>
+  </div>  <div id="content-en" style="display: none;">
+    <img class="logo" src="https://raw.githubusercontent.com/F0rc3Run/F0rc3Run-panel/main/docs/logo.png" alt="logo">
+    <h1>F0rc3Run Panel</h1>
+    <p>
+      The F0rc3Run project provides <strong>free, open, and secure internet access</strong>. Click on one of the buttons below to get the latest subscription link for each protocol.
+    </p>
+    <div class="button-grid">
+      <a class="button" href="https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/splitted-by-protocol/vless/vless_part1.txt" target="_blank">VLESS</a>
+      <a class="button" href="https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/splitted-by-protocol/trojan/trojan_part1.txt" target="_blank">Trojan</a>
+      <a class="button" href="https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/splitted-by-protocol/ss/ss.txt" target="_blank">Shadowsocks</a>
+      <button class="button" onclick="getRandomSSTP()">SSTP</button>
+    </div>
+    <div id="sstp-result"></div>
+    <div class="qr">
+      <h2>Quick Access via QR</h2>
+      <p>Scan a QR code below to get each protocol's link quickly:</p>
+      <img src="https://api.qrserver.com/v1/create-qr-code/?data=https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/splitted-by-protocol/vless/vless_part1.txt&size=150x150" alt="VLESS QR">
+      <img src="https://api.qrserver.com/v1/create-qr-code/?data=https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/splitted-by-protocol/trojan/trojan_part1.txt&size=150x150" alt="Trojan QR">
+      <img src="https://api.qrserver.com/v1/create-qr-code/?data=https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/splitted-by-protocol/ss/ss.txt&size=150x150" alt="Shadowsocks QR">
+    </div>
+    <footer>
+      <p>🤖 Follow our Telegram bot for free access:<br>
+        <a href="https://t.me/AttackAlertIR" target="_blank">@AttackAlertIR</a>
+      </p>
+      <p>📦 Full project source available on GitHub:<br>
+        <a href="https://github.com/F0rc3Run/F0rc3Run-panel" target="_blank">github.com/F0rc3Run/F0rc3Run-panel</a>
+      </p>
+    </footer>
   </div>  <script>
     function setLang(lang) {
       document.getElementById('content-fa').style.display = (lang === 'fa') ? 'block' : 'none';
@@ -139,8 +164,9 @@
       const rand = lines[Math.floor(Math.random() * lines.length)];
       const [country, hostport] = rand.split("|").map(s => s.trim());
       const [host, port] = hostport.split(":");
-      const result = `🌐 کشور: ${country}\nHostname: ${host}\nPort: ${port}\nUsername: vpn\nPassword: vpn`;
-      document.getElementById("sstp-result").innerText = result;
+      const resultFa = `🌐 کشور: ${country}\nHostname: ${host}\nPort: ${port}\nUsername: vpn\nPassword: vpn`;
+      const resultEn = `Hostname: ${host}\nPort: ${port}\nUsername: vpn\nPassword: vpn`;
+      document.getElementById("sstp-result").innerText = document.getElementById('content-fa').style.display === 'block' ? resultFa : resultEn;
     }
   </script></body>
 </html>
