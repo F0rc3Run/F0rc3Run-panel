@@ -90,8 +90,9 @@ You can also follow our Telegram bot for automatic VPN sharing:
 
 ### 🧩 License
 
-MIT — use freely, share freely.
+FFAL
 
 ---
 
 ### 🔖 Tags / Topics
+free-vpn, vpn-config, vpn-servers, proxy, proxy-server, free-proxy, anti-censorship, bypass-filter, internet-freedom, uncensored-internet, privacy, open-source, telegram-bot, github-actions, v2ray, vmess, vless, trojan, shadowsocks, hysteria, hysteria2, tuic, reality, sstp
