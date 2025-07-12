@@ -1,98 +1,103 @@
-# F0rc3Run-panel
+<h1 align="center">🛡️ Free VPN for Iran & Worldwide | F0rc3Run VPN Panel</h1>
 
-💠 A powerful open-source Telegram and web panel for distributing **free VPN configurations** to bypass censorship.
+<p align="center">
+  <strong>Free VPN servers for unrestricted internet access</strong><br>
+  Bypass censorship using protocols like VLESS, VMess, Trojan, Shadowsocks, SSTP, and more.
+</p>
 
----
-
-## 🌍 English
-
-**F0rc3Run** is an open-source anti-censorship panel offering regularly updated VPN subscriptions for these protocols:
-
-- VLESS
-- VMess
-- Trojan
-- Shadowsocks
-- SSTP (random server picker)
-
-Each subscription is collected from public sources, filtered, and refreshed frequently.
-
-### ✅ Features:
-- Web-based responsive UI
-- Telegram-ready usage
-- Supports QR code generation
-- SSTP random server display (with credentials)
-- Easy multi-language support (English & Persian)
-- GitHub-hosted static panel (free!)
+<p align="center">
+  <a href="https://f0rc3run.github.io/F0rc3Run-panel/" target="_blank">🌐 Web Panel</a> • 
+  <a href="https://t.me/ForceRunVPN" target="_blank">📲 Telegram Bot</a> • 
+  <a href="https://github.com/F0rc3Run/F0rc3Run-panel" target="_blank">⭐ Star on GitHub</a>
+</p>
 
 ---
 
-### 🔗 Subscription Links:
+## 🌍 Uncensored Internet for Everyone
 
-| Protocol      | Link                                                                 |
-|---------------|----------------------------------------------------------------------|
-| VLESS         | [vless_part1.txt](https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/splitted-by-protocol/vless/vless_part1.txt) |
-| VMess         | [vmess_all.txt](https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/data/vmess_all.txt) |
-| Trojan        | [trojan_part1.txt](https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/splitted-by-protocol/trojan/trojan_part1.txt) |
-| Shadowsocks   | [ss.txt](https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/splitted-by-protocol/ss/ss.txt) |
-| SSTP          | [sstp_with_country.txt](https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/sstp-configs/sstp_with_country.txt) |
+**F0rc3Run** is an open-source VPN panel and Telegram bot that offers **free daily VPN configurations**. It aims to provide unrestricted and secure internet access in countries with heavy internet censorship, including Iran, China, and others.
 
 ---
 
-### 🛠 How to Deploy:
+## ✅ Why F0rc3Run VPN?
 
-No backend needed. Simply host `index.html` using GitHub Pages:
-
-1. Go to **Settings > Pages**
-2. Set source to `main` branch and `/ (root)`
-3. Done! Your panel is live on `https://username.github.io/F0rc3Run-panel`
-
----
-
-### 📢 Telegram Bot
-
-You can also follow our Telegram bot for automatic VPN sharing:
-
-👉 [@AttackAlertIR](https://t.me/AttackAlertIR)
+- 🎯 Always updated: fresh configs every 12 hours
+- 🔐 Multiple protocols: VLESS, VMess, Trojan, SSTP, Shadowsocks
+- 📲 Easy-to-use web panel + Telegram bot
+- ⚡ 1-click access + QR Code support
+- 🆓 100% free and open-source
+- 🤖 Powered by GitHub Actions
 
 ---
 
-## 🇮🇷 فارسی
+## 🚀 Quick Access Links
 
-**پنل F0rc3Run** ابزاری متن‌باز برای دسترسی سریع و رایگان به کانفیگ‌های پروتکل‌های ضد فیلترینگ است. این پروژه با هدف فراهم کردن اینترنت آزاد برای کاربران داخل ایران توسعه یافته است.
-
-### 📌 پروتکل‌های پشتیبانی‌شده:
-
-- VLESS
-- VMess
-- Trojan
-- Shadowsocks
-- SSTP (انتخاب تصادفی سرور)
-
-تمام لینک‌ها به صورت مداوم بروزرسانی و فیلتر می‌شوند.
+| Protocol      | Config URL |
+|---------------|------------|
+| **VLESS**     | [Click Here](https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/splitted-by-protocol/vless/vless_part1.txt) |
+| **VMess**     | [Click Here](https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/data/vmess_all.txt) |
+| **Trojan**    | [Click Here](https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/splitted-by-protocol/trojan/trojan_part1.txt) |
+| **Shadowsocks** | [Click Here](https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/splitted-by-protocol/ss/ss.txt) |
+| **SSTP** (Random) | [Click Here](https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/sstp-configs/sstp_with_country.txt) |
 
 ---
 
-### 📲 امکانات ویژه:
+## 🔎 SEO Keywords
 
-- طراحی واکنش‌گرا و جذاب برای موبایل و دسکتاپ
-- پشتیبانی از زبان فارسی و انگلیسی
-- قابلیت نمایش QR برای اشتراک‌ها
-- بدون نیاز به سرور (میزبانی رایگان روی GitHub)
-- ربات تلگرام برای دریافت لحظه‌ای اشتراک‌ها
+> These keywords help Google index your repo for relevant VPN searches:
 
----
-
-### 🌐 هدف پروژه:
-
-دسترسی آزاد، سریع و ایمن به اینترنت برای تمام مردم ایران 🇮🇷
-
----
-
-### 🧩 License
-
-FFAL
+- `free vpn for iran`
+- `bypass censorship github`
+- `best vpn telegram bot`
+- `free vmess vpn`
+- `free vless config`
+- `free vpn servers`
+- `sstp vpn`
+- `shadowsocks free`
+- `github vpn configs`
+- `iran internet access`
+- `uncensored internet`
+- `free open-source vpn`
 
 ---
 
-### 🔖 Tags / Topics
-free-vpn, vpn-config, vpn-servers, proxy, proxy-server, free-proxy, anti-censorship, bypass-filter, internet-freedom, uncensored-internet, privacy, open-source, telegram-bot, github-actions, v2ray, vmess, vless, trojan, shadowsocks, hysteria, hysteria2, tuic, reality, sstp
+## 📈 Boost Your Privacy with Open-Source
+
+F0rc3Run supports:
+
+- ✅ **VLESS** – Secure and flexible with XTLS
+- ✅ **VMess** – Popular V2Ray protocol
+- ✅ **Trojan** – TLS-based anti-censorship
+- ✅ **Shadowsocks** – Lightweight and fast
+- ✅ **SSTP** – VPNGate-compatible servers
+
+---
+
+## 🤖 Telegram Bot
+
+Always updated links in real-time via Telegram:  
+📲 [https://t.me/ForceRunVPN](https://t.me/ForceRunVPN)
+
+---
+
+## 🛠️ GitHub Actions Automation
+
+The panel is built using GitHub Actions, which fetch and validate configs every 12 hours to ensure freshness.
+
+---
+
+## 📜 License
+
+Licensed under the **FFAL – Free For All License**  
+🔗 [View License](https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/LICENSE)
+
+---
+
+## 📢 Promote & Share
+
+Help others break through censorship. Share this project with others:  
+👉 https://github.com/F0rc3Run/F0rc3Run-panel
+
+---
+
+<p align="center"><strong>🌐 Together, we fight for free internet access! 🌐</strong></p>
