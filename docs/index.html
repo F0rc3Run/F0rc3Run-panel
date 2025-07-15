@@ -1,172 +1,81 @@
-<!DOCTYPE html><html lang="fa" dir="rtl"><head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>پنل F0rc3Run</title>
-  <style>
-    body {
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-      color: #fff;
-      font-family: Vazir, sans-serif;
-      padding: 2rem;
-      text-align: center;
-    }
-    h1 {
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-      color: #00ffc8;
-    }
-    p {
-      max-width: 600px;
-      margin: 0 auto 2rem;
-      line-height: 1.8;
-    }
-    .button-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 1rem;
-      margin: 2rem 0;
-    }
-    a.button, button.button {
-      display: block;
-      padding: 1rem;
-      border-radius: 1rem;
-      background: #00ffc8;
-      color: #000;
-      font-weight: bold;
-      text-decoration: none;
-      transition: 0.3s;
-      border: none;
-      cursor: pointer;
-    }
-    a.button:hover, button.button:hover {
-      background: #00bfa5;
-    }
-    .qr {
-      margin-top: 2rem;
-    }
-    .qr img {
-      width: 160px;
-      margin: 10px;
-    }
-    footer {
-      margin-top: 3rem;
-      font-size: 0.9rem;
-      opacity: 0.8;
-    }
-    footer a {
-      color: #00ffc8;
-      text-decoration: none;
-    }
-    .lang-switcher {
-      margin-bottom: 2rem;
-    }
-    .lang-switcher button {
-      margin: 0 0.5rem;
-      padding: 0.5rem 1rem;
-      border: none;
-      border-radius: 8px;
-      background-color: #00ffc8;
-      color: #000;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    .lang-switcher button:hover {
-      background-color: #00bfa5;
-    }
-    #sstp-result {
-      margin-top: 1rem;
-      font-size: 1.1rem;
-      background-color: #222;
-      padding: 1rem;
-      border-radius: 12px;
-      line-height: 2;
-      white-space: pre-wrap;
-    }
-    .logo {
-      width: 100px;
-      margin-bottom: 1rem;
-    }
-  </style>
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F0rc3Run - دریافت لینک و کانفیگ</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="lang-switcher">
-    <button onclick="setLang('fa')">🇮🇷 فارسی</button>
-    <button onclick="setLang('en')">🇬🇧 English</button>
-  </div>  <div id="content-fa">
-    <img class="logo" src="https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/Logo/logo.png" alt="logo">
-    <h1>F0rc3Run</h1>
-    <p>
-      پروژه F0rc3Run با هدف <strong>دسترسی آزاد، رایگان و ایمن به اینترنت</strong> برای تمام ایرانیان ساخته شده است. این پنل به شما اجازه می‌دهد تا با کلیک روی یکی از پروتکل‌های زیر، جدیدترین لینک اشتراک مخصوص آن را دریافت کنید.
-    </p>
-    <div class="button-grid">
-      <a class="button" href="https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/splitted-by-protocol/vless/vless_part1.txt" target="_blank">VLESS</a>
-      <a class="button" href="https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/splitted-by-protocol/trojan/trojan_part1.txt" target="_blank">Trojan</a>
-      <a class="button" href="https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/splitted-by-protocol/ss/ss.txt" target="_blank">Shadowsocks</a>
-      <button class="button" onclick="getRandomSSTP()">SSTP</button>
-    </div>
-    <div id="sstp-result"></div>
-    <div class="qr">
-      <h2>دریافت سریع با QR</h2>
-      <p>برای اسکن سریع لینک اشتراک هر پروتکل، از QRهای زیر استفاده کنید:</p>
-      <img src="https://api.qrserver.com/v1/create-qr-code/?data=https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/splitted-by-protocol/vless/vless_part1.txt&size=150x150" alt="VLESS QR">
-      <img src="https://api.qrserver.com/v1/create-qr-code/?data=https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/splitted-by-protocol/trojan/trojan_part1.txt&size=150x150" alt="Trojan QR">
-      <img src="https://api.qrserver.com/v1/create-qr-code/?data=https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/splitted-by-protocol/ss/ss.txt&size=150x150" alt="Shadowsocks QR">
-    </div>
-    <footer>
-      <p>🤖 برای دریافت رایگان اشتراک‌ها در تلگرام، ربات ما را دنبال کنید:<br>
-        <a href="https://t.me/ForceRunVPN" target="_blank">@ForceRunVPN</a>
-      </p>
-      <p>📦 سورس کامل پروژه در گیت‌هاب:<br>
-        <a href="https://github.com/F0rc3Run/F0rc3Run-panel" target="_blank">github.com/F0rc3Run/F0rc3Run-panel</a>
-      </p>
-      <p>❤️ به امید اینترنت آزاد برای همه‌ی مردم ایران 🌍</p>
-    </footer>
-  </div>  <div id="content-en" style="display: none;">
-    <img class="logo" src="https://raw.githubusercontent.com/F0rc3Run/F0rc3Run-panel/main/docs/logo.png" alt="logo">
-    <h1>F0rc3Run Panel</h1>
-    <p>
-      The F0rc3Run project provides <strong>free, open, and secure internet access</strong>. Click on one of the buttons below to get the latest subscription link for each protocol.
-    </p>
-    <div class="button-grid">
-      <a class="button" href="https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/splitted-by-protocol/vless/vless_part1.txt" target="_blank">VLESS</a>
-      <a class="button" href="https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/splitted-by-protocol/trojan/trojan_part1.txt" target="_blank">Trojan</a>
-      <a class="button" href="https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/splitted-by-protocol/ss/ss.txt" target="_blank">Shadowsocks</a>
-      <button class="button" onclick="getRandomSSTP()">SSTP</button>
-    </div>
-    <div id="sstp-result"></div>
-    <div class="qr">
-      <h2>Quick Access via QR</h2>
-      <p>Scan a QR code below to get each protocol's link quickly:</p>
-      <img src="https://api.qrserver.com/v1/create-qr-code/?data=https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/splitted-by-protocol/vless/vless_part1.txt&size=150x150" alt="VLESS QR">
-      <img src="https://api.qrserver.com/v1/create-qr-code/?data=https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/splitted-by-protocol/trojan/trojan_part1.txt&size=150x150" alt="Trojan QR">
-      <img src="https://api.qrserver.com/v1/create-qr-code/?data=https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/splitted-by-protocol/ss/ss.txt&size=150x150" alt="Shadowsocks QR">
-    </div>
-    <footer>
-      <p>🤖 Follow our Telegram bot for free access:<br>
-        <a href="https://t.me/ForceRunVPN" target="_blank">@ForceRunVPN</a>
-      </p>
-      <p>📦 Full project source available on GitHub:<br>
-        <a href="https://github.com/F0rc3Run/F0rc3Run-panel" target="_blank">github.com/F0rc3Run/F0rc3Run-panel</a>
-      </p>
-    </footer>
-  </div>  <script>
-    function setLang(lang) {
-      document.getElementById('content-fa').style.display = (lang === 'fa') ? 'block' : 'none';
-      document.getElementById('content-en').style.display = (lang === 'en') ? 'block' : 'none';
-    }
 
-    async function getRandomSSTP() {
-      const url = "https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/sstp-configs/sstp_with_country.txt";
-      const res = await fetch(url);
-      const text = await res.text();
-      const lines = text.trim().split("\n").filter(l => l.includes(":"));
-      if (lines.length === 0) return;
-      const rand = lines[Math.floor(Math.random() * lines.length)];
-      const [country, hostport] = rand.split("|").map(s => s.trim());
-      const [host, port] = hostport.split(":");
-      const resultFa = `🌐 کشور: ${country}\nHostname: ${host}\nPort: ${port}\nUsername: vpn\nPassword: vpn`;
-      const resultEn = `Hostname: ${host}\nPort: ${port}\nUsername: vpn\nPassword: vpn`;
-      document.getElementById("sstp-result").innerText = document.getElementById('content-fa').style.display === 'block' ? resultFa : resultEn;
-    }
-  </script></body>
+    <div class="container">
+        <header>
+            <h1>F0rc3Run Panel</h1>
+            <p class="description">
+                F0rc3Run پروژه‌ای است که با هدف ایجاد دسترسی آزاد و بدون سانسور به اینترنت برای همه کاربران طراحی شده است.
+            </p>
+            <p class="instructions">
+                <strong>نحوه استفاده:</strong> پروتکل مورد نظر خود را انتخاب کنید. سپس لینک اشتراک یا اطلاعات کانفیگ را کپی کرده و در کلاینت مربوطه (مانند V2RayNG, NekoBox, یا تنظیمات SSTP ویندوز) وارد نمایید.
+            </p>
+        </header>
+
+        <div class="protocol-grid" id="protocol-grid">
+            <div class="protocol-card" data-protocol="v2ray">
+                <i class="fas fa-bolt icon"></i>
+                <span>V2Ray</span>
+            </div>
+            <div class="protocol-card" data-protocol="trojan">
+                <i class="fa-solid fa-horse-head icon"></i>
+                <span>Trojan</span>
+            </div>
+            <div class="protocol-card" data-protocol="shadowsocks">
+                <i class="fa-solid fa-ghost icon"></i>
+                <span>ShadowSocks</span>
+            </div>
+            <div class="protocol-card" data-protocol="sstp">
+                <i class="fa-solid fa-lock icon"></i>
+                <span>SSTP (کانفیگ رندوم)</span>
+            </div>
+        </div>
+
+        <div class="output-container" id="sub-output-container">
+            <p>لینک اشتراک شما آماده است:</p>
+            <div class="output-field">
+                <input type="text" id="sub-link-input" readonly>
+                <button class="copy-main-btn" title="کپی کردن لینک">
+                    <i class="fa-solid fa-copy"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="output-container" id="sstp-output-container">
+            <p>اطلاعات سرور SSTP (تصادفی):</p>
+            <div class="sstp-details">
+                <div class="detail-row">
+                    <span class="detail-label">Hostname:</span>
+                    <span class="detail-value" id="sstp-hostname"></span>
+                    <button class="copy-detail-btn" title="کپی"><i class="fa-solid fa-copy"></i></button>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Port:</span>
+                    <span class="detail-value" id="sstp-port"></span>
+                    <button class="copy-detail-btn" title="کپی"><i class="fa-solid fa-copy"></i></button>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Username:</span>
+                    <span class="detail-value">vpn</span>
+                    <button class="copy-detail-btn" title="کپی"><i class="fa-solid fa-copy"></i></button>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Password:</span>
+                    <span class="detail-value">vpn</span>
+                    <button class="copy-detail-btn" title="کپی"><i class="fa-solid fa-copy"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
 </html>
