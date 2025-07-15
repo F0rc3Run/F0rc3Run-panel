@@ -1,16 +1,18 @@
-@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap');
-
 :root {
-    --bg-color: #121826;
-    --card-color: #1a2233;
-    --primary-color: #00aaff;
-    --text-color: #f0f0f0;
-    --text-secondary: #a0a0a0;
-    --border-color: #2a334e;
+    --bg-color: #0d1117;
+    --card-color: #161b22;
+    --border-color: #30363d;
+    --primary-color: #58a6ff;
+    --text-color: #c9d1d9;
+    --text-secondary: #8b949e;
+    --font-primary: 'Vazirmatn', sans-serif;
+    --font-mono: 'Fira Code', monospace;
 }
 
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
 body {
-    font-family: 'Vazirmatn', sans-serif;
+    font-family: var(--font-primary);
     background-color: var(--bg-color);
     color: var(--text-color);
     display: flex;
@@ -20,81 +22,84 @@ body {
     padding: 20px;
 }
 
-.container {
+.background-grid {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
-    max-width: 600px;
-    text-align: center;
+    height: 100%;
+    background-image: linear-gradient(var(--border-color) 1px, transparent 1px), linear-gradient(90deg, var(--border-color) 1px, transparent 1px);
+    background-size: 30px 30px;
+    opacity: 0.2;
+    z-index: -1;
 }
 
-header h1 { font-size: 2.5rem; color: white; margin-bottom: 15px; }
-
-/* استایل‌های جدید برای توضیحات */
-header .description {
-    color: var(--text-secondary);
-    margin-bottom: 25px;
-    line-height: 1.7;
-}
-
-header .instructions {
-    background-color: var(--card-color);
-    color: var(--text-color);
-    padding: 15px;
-    border-radius: 10px;
-    border-left: 4px solid var(--primary-color);
-    text-align: right;
-    margin-bottom: 40px;
-    font-size: 0.95rem;
-    line-height: 1.8;
-}
-
-header .instructions strong {
-    color: var(--primary-color);
-}
+.container { width: 100%; max-width: 700px; text-align: center; }
+.main-header { margin-bottom: 40px; }
+.logo { width: 100px; height: 100px; border-radius: 50%; margin-bottom: 20px; border: 2px solid var(--primary-color); }
+.main-header h1 { font-family: var(--font-mono); font-size: 2rem; color: white; }
+.main-header p { color: var(--text-secondary); }
 
 .protocol-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 20px;
 }
 
 .protocol-card {
     background-color: var(--card-color);
-    padding: 25px;
-    border-radius: 15px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 30px;
     cursor: pointer;
-    border: 2px solid var(--border-color);
     transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
 }
 
-.protocol-card:hover { border-color: var(--primary-color); transform: translateY(-5px); }
-.protocol-card .icon { font-size: 3rem; color: var(--primary-color); transition: transform 1.5s ease-in-out; }
-.protocol-card .icon.processing { transform: rotate(720deg); }
-.protocol-card span { font-size: 1.1rem; font-weight: 700; }
+.protocol-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 20px rgba(88, 166, 255, 0.2);
+}
 
-/* بخش خروجی */
+.card-content { display: flex; flex-direction: column; align-items: center; gap: 15px; }
+.icon { font-size: 2.5rem; color: var(--primary-color); transition: transform 1s ease-in-out; }
+.icon.processing { transform: rotate(720deg) scale(1.2); }
+.protocol-card span { font-size: 1.2rem; font-weight: 700; color: white; }
+
+.output-wrapper { min-height: 200px; margin-top: 30px; }
 .output-container {
-    margin-top: 40px;
-    padding: 20px;
     background-color: var(--card-color);
-    border-radius: 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    text-align: left;
     display: none;
     animation: fadeIn 0.5s ease;
 }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-.output-container p { margin-bottom: 15px; font-size: 1.1rem; }
-.output-field { display: flex; gap: 10px; }
-.output-field input { width: 100%; padding: 12px; background-color: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-color); border-radius: 8px; font-size: 1rem; text-align: left; direction: ltr; }
-.output-field button { padding: 0 15px; background-color: var(--primary-color); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 1.2rem; transition: background-color 0.3s ease; }
-.output-field button:hover { background-color: #0088cc; }
+@keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
 
-/* استایل‌های بخش SSTP */
-.sstp-details { display: flex; flex-direction: column; gap: 15px; text-align: left; }
-.detail-row { display: flex; align-items: center; background-color: var(--bg-color); padding: 10px; border-radius: 8px; }
-.detail-label { font-weight: 700; color: var(--text-secondary); width: 100px; }
-.detail-value { flex-grow: 1; color: white; font-family: monospace; font-size: 1.1rem; }
-.copy-detail-btn { background: none; border: none; color: var(--text-secondary); cursor: pointer; font-size: 1.1rem; padding: 5px 10px; transition: color 0.3s ease; }
-.copy-detail-btn:hover { color: var(--primary-color); }
+.output-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    background-color: #010409;
+    border-bottom: 1px solid var(--border-color);
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+#output-title { font-family: var(--font-mono); color: var(--text-secondary); }
+.copy-main-btn { background: none; border: none; color: var(--text-secondary); cursor: pointer; font-size: 1.1rem; transition: color 0.2s; }
+.copy-main-btn:hover { color: var(--primary-color); }
+
+.output-body { padding: 20px; font-family: var(--font-mono); }
+#sub-link-output { white-space: pre-wrap; word-break: break-all; color: white; min-height: 50px; }
+#sstp-details-output { display: flex; flex-direction: column; gap: 10px; }
+
+/* انیمیشن تایپ شدن متن */
+.typing-cursor::after {
+    content: '█';
+    animation: blink 1s step-end infinite;
+}
+@keyframes blink { 50% { opacity: 0; } }
