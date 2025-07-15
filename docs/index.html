@@ -3,74 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>F0rc3Run - دریافت لینک و کانفیگ</title>
+    <title>F0rc3Run - پنل دریافت کانفیگ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
+    <div class="background-grid"></div>
     <div class="container">
-        <header>
+        <header class="main-header">
+            <img src="logo.png" alt="Logo" class="logo">
             <h1>F0rc3Run Panel</h1>
-            <p class="description">
-                F0rc3Run پروژه‌ای است که با هدف ایجاد دسترسی آزاد و بدون سانسور به اینترنت برای همه کاربران طراحی شده است.
-            </p>
-            <p class="instructions">
-                <strong>نحوه استفاده:</strong> پروتکل مورد نظر خود را انتخاب کنید. سپس لینک اشتراک یا اطلاعات کانفیگ را کپی کرده و در کلاینت مربوطه (مانند V2RayNG, NekoBox, یا تنظیمات SSTP ویندوز) وارد نمایید.
-            </p>
+            <p>سرویس خود را برای دریافت کانفیگ انتخاب کنید</p>
         </header>
 
         <div class="protocol-grid" id="protocol-grid">
-            <div class="protocol-card" data-protocol="v2ray">
-                <i class="fas fa-bolt icon"></i>
-                <span>V2Ray</span>
+            <div class="protocol-card" data-protocol="vless">
+                <div class="card-content">
+                    <i class="fas fa-bolt icon"></i>
+                    <span>VLESS</span>
+                </div>
             </div>
             <div class="protocol-card" data-protocol="trojan">
-                <i class="fa-solid fa-horse-head icon"></i>
-                <span>Trojan</span>
+                <div class="card-content">
+                    <i class="fa-solid fa-horse-head icon"></i>
+                    <span>Trojan</span>
+                </div>
             </div>
-            <div class="protocol-card" data-protocol="shadowsocks">
-                <i class="fa-solid fa-ghost icon"></i>
-                <span>ShadowSocks</span>
+            <div class="protocol-card" data-protocol="ss">
+                <div class="card-content">
+                    <i class="fa-solid fa-ghost icon"></i>
+                    <span>ShadowSocks</span>
+                </div>
             </div>
             <div class="protocol-card" data-protocol="sstp">
-                <i class="fa-solid fa-lock icon"></i>
-                <span>SSTP (کانفیگ رندوم)</span>
+                <div class="card-content">
+                    <i class="fa-solid fa-lock icon"></i>
+                    <span>SSTP</span>
+                </div>
             </div>
         </div>
 
-        <div class="output-container" id="sub-output-container">
-            <p>لینک اشتراک شما آماده است:</p>
-            <div class="output-field">
-                <input type="text" id="sub-link-input" readonly>
-                <button class="copy-main-btn" title="کپی کردن لینک">
-                    <i class="fa-solid fa-copy"></i>
-                </button>
-            </div>
-        </div>
-        
-        <div class="output-container" id="sstp-output-container">
-            <p>اطلاعات سرور SSTP (تصادفی):</p>
-            <div class="sstp-details">
-                <div class="detail-row">
-                    <span class="detail-label">Hostname:</span>
-                    <span class="detail-value" id="sstp-hostname"></span>
-                    <button class="copy-detail-btn" title="کپی"><i class="fa-solid fa-copy"></i></button>
+        <div class="output-wrapper">
+            <div class="output-container" id="output-container">
+                <div class="output-header">
+                    <span id="output-title"></span>
+                    <button class="copy-main-btn" title="کپی کردن محتوا">
+                        <i class="fa-solid fa-copy"></i>
+                    </button>
                 </div>
-                <div class="detail-row">
-                    <span class="detail-label">Port:</span>
-                    <span class="detail-value" id="sstp-port"></span>
-                    <button class="copy-detail-btn" title="کپی"><i class="fa-solid fa-copy"></i></button>
-                </div>
-                <div class="detail-row">
-                    <span class="detail-label">Username:</span>
-                    <span class="detail-value">vpn</span>
-                    <button class="copy-detail-btn" title="کپی"><i class="fa-solid fa-copy"></i></button>
-                </div>
-                <div class="detail-row">
-                    <span class="detail-label">Password:</span>
-                    <span class="detail-value">vpn</span>
-                    <button class="copy-detail-btn" title="کپی"><i class="fa-solid fa-copy"></i></button>
+                <div class="output-body">
+                    <pre id="sub-link-output"></pre>
+                    <div id="sstp-details-output"></div>
                 </div>
             </div>
         </div>
