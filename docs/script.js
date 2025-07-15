@@ -60,14 +60,10 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             outputTitle.textContent = title;
 
-            // --- شروع تغییرات اصلی ---
-
             if (type === 'sub') {
-                // برای پروتکل‌های اشتراکی، خود URL را نمایش می‌دهیم
                 textToCopy = url;
                 typeEffect(subLinkOutput, url);
             } else if (type === 'sstp') {
-                // برای SSTP، لیست را دانلود و پردازش می‌کنیم
                 const response = await fetch(url);
                 if (!response.ok) throw new Error('Network error');
                 const data = await response.text();
@@ -77,16 +73,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 const randomServer = lines[Math.floor(Math.random() * lines.length)];
                 
-                // نام کشور (که بعد از # می‌آید) را حذف می‌کنیم
                 const serverInfo = randomServer.split('#')[0].trim();
-                const [hostname, port] = serverInfo.split(':');
+                const [fullHostname, port] = serverInfo.split(':');
+
+                // --- شروع تغییر اصلی ---
+                // اگر | در نام هاست وجود داشت، آن را جدا کرده و فقط بخش دوم (آدرس) را برمی‌داریم
+                const hostname = fullHostname.includes('|') ? fullHostname.split('|')[1].trim() : fullHostname.trim();
+                // --- پایان تغییر اصلی ---
                 
-                const details = `Hostname : ${hostname.trim()}\nPort     : ${port.trim()}\nUsername : vpn\nPassword : vpn`;
+                const details = `Hostname : ${hostname}\nPort     : ${port.trim()}\nUsername : vpn\nPassword : vpn`;
                 textToCopy = details;
                 typeEffect(subLinkOutput, details);
             }
-
-            // --- پایان تغییرات اصلی ---
 
         } catch (error) {
             outputTitle.textContent = 'Error';
