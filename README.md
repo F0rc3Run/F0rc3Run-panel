@@ -69,7 +69,7 @@ F0rc3Run supports:
 - ✅ **VMess** – Popular V2Ray protocol
 - ✅ **Trojan** – TLS-based anti-censorship
 - ✅ **Shadowsocks** – Lightweight and fast
-- ✅ **SSTP** – VPNGate-compatible servers
+- ✅ **SSTP** – compatible servers
 
 ---
 
