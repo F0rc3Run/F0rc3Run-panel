@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // آدرس‌های جدید و پویا برای هر پروتکل
+    // آدرس‌های مورد نیاز برای هر پروتکل
     const protocols = {
         vless: {
             url: 'https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/main/splitted-by-protocol/vless/vless_part1.txt',
@@ -33,7 +33,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let isProcessing = false;
     let textToCopy = '';
 
-    // افکت تایپ شدن متن
     function typeEffect(element, text, onComplete = () => {}) {
         element.innerHTML = '';
         element.classList.add('typing-cursor');
@@ -50,35 +49,45 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 30);
     }
     
-    // دریافت و پردازش اطلاعات
+    // دریافت و پردازش اطلاعات با منطق جدید
     async function handleProtocol(protocol) {
         const { url, type, title } = protocols[protocol];
         outputContainer.style.display = 'block';
-        outputTitle.textContent = 'Fetching Data...';
+        outputTitle.textContent = 'Processing...';
         subLinkOutput.innerHTML = '';
         sstpDetailsOutput.innerHTML = '';
 
         try {
-            const response = await fetch(url);
-            if (!response.ok) throw new Error('Network error');
-            const data = await response.text();
-            
             outputTitle.textContent = title;
 
+            // --- شروع تغییرات اصلی ---
+
             if (type === 'sub') {
-                textToCopy = data;
-                typeEffect(subLinkOutput, data);
+                // برای پروتکل‌های اشتراکی، خود URL را نمایش می‌دهیم
+                textToCopy = url;
+                typeEffect(subLinkOutput, url);
             } else if (type === 'sstp') {
+                // برای SSTP، لیست را دانلود و پردازش می‌کنیم
+                const response = await fetch(url);
+                if (!response.ok) throw new Error('Network error');
+                const data = await response.text();
+                
                 const lines = data.split('\n').filter(line => line.trim());
                 if (lines.length === 0) throw new Error('SSTP list is empty');
                 
                 const randomServer = lines[Math.floor(Math.random() * lines.length)];
-                const [hostname, port] = randomServer.split(':');
+                
+                // نام کشور (که بعد از # می‌آید) را حذف می‌کنیم
+                const serverInfo = randomServer.split('#')[0].trim();
+                const [hostname, port] = serverInfo.split(':');
                 
                 const details = `Hostname : ${hostname.trim()}\nPort     : ${port.trim()}\nUsername : vpn\nPassword : vpn`;
                 textToCopy = details;
                 typeEffect(subLinkOutput, details);
             }
+
+            // --- پایان تغییرات اصلی ---
+
         } catch (error) {
             outputTitle.textContent = 'Error';
             typeEffect(subLinkOutput, `Failed to load data. ${error.message}`);
