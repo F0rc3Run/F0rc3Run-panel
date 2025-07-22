@@ -1,5 +1,4 @@
-<h1 align="center">⚓️ | F0rc3Run Panel</h1>
-
+## <p align="center">⚓️ | F0rc3Run Panel</h1>
 <p align="center">
   <strong>Free VPN servers for unrestricted internet access</strong><br>
   Bypass censorship using protocols like VLESS, VMess, Trojan, Shadowsocks, SSTP, and more.
@@ -21,7 +20,7 @@
 
 ## ✅ Why F0rc3Run VPN?
 
-- 🎯 Always updated: fresh configs every 12 hours
+- 🎯 Always updated: fresh configs every 6 hours
 - 🔐 Multiple protocols: VLESS, VMess, Trojan, SSTP, Shadowsocks
 - 📲 Easy-to-use web panel + Telegram bot
 - ⚡ 1-click access + QR Code support
@@ -38,13 +37,13 @@
 | **VMess**     | [Click Here](https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/data/vmess_all.txt) |
 | **Trojan**    | [Click Here](https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/splitted-by-protocol/trojan/trojan_part1.txt) |
 | **Shadowsocks** | [Click Here](https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/splitted-by-protocol/ss/ss.txt) |
-| **SSTP** (Random) | [Click Here](https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/sstp-configs/sstp_with_country.txt) |
+| **SSTP** | [Click Here](https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/sstp-configs/sstp_with_country.txt) |
 
 ---
 
 ## 🔎
 
-- `free vpn for iran`
+- `free vpn`
 - `bypass censorship github`
 - `best vpn telegram bot`
 - `free vmess vpn`
@@ -53,10 +52,10 @@
 - `sstp vpn`
 - `shadowsocks free`
 - `github vpn configs`
-- `iran internet access`
+- `internet access`
 - `uncensored internet`
 - `free open-source vpn`
-
+- `v2ray`
 ---
 
 ## 📈 Boost Your Privacy with Open-Source
@@ -80,7 +79,7 @@ Always updated links in real-time via Telegram:
 
 ## 🛠️ GitHub Actions Automation
 
-The panel is built using GitHub Actions, which fetch and validate configs every 12 hours to ensure freshness.
+The panel is built using GitHub Actions, which fetch and validate configs every 6 hours to ensure freshness.
 
 ---
 
