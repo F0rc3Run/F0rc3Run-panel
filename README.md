@@ -1,4 +1,4 @@
-<h1 align="center">🛡️ Free VPN for Iran & Worldwide | F0rc3Run VPN Panel</h1>
+<h1 align="center">⚓️ | F0rc3Run Panel</h1>
 
 <p align="center">
   <strong>Free VPN servers for unrestricted internet access</strong><br>
@@ -42,9 +42,7 @@
 
 ---
 
-## 🔎 SEO Keywords
-
-> These keywords help Google index your repo for relevant VPN searches:
+## 🔎
 
 - `free vpn for iran`
 - `bypass censorship github`
