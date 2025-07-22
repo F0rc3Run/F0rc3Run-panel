@@ -97,4 +97,4 @@ Help others break through censorship. Share this project with others:
 
 ---
 
-<p align="center"><strong>🌐 Together, we fight for free internet access! 🌐</strong></p>
+<p align="center"><strong>✊️ Together, we fight for free internet access! </strong></p>
