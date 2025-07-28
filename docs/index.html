@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>F0rc3Run - پنل دریافت کانفیگ</title>
+    <title>F0rc3Run - پنل سرور رایگان </title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
@@ -16,33 +16,24 @@
         <header class="main-header">
             <img src="logo.png" alt="Logo" class="logo">
             <h1>F0rc3Run Panel</h1>
-            <p>سرویس خود را برای دریافت کانفیگ انتخاب کنید</p>
+            <p>سرویس خود را برای دریافت کانفیگ یا اندپوینت انتخاب کنید</p>
         </header>
 
         <div class="protocol-grid" id="protocol-grid">
             <div class="protocol-card" data-protocol="vless">
-                <div class="card-content">
-                    <i class="fas fa-bolt icon"></i>
-                    <span>VLESS</span>
-                </div>
+                <div class="card-content"><i class="fas fa-bolt icon"></i><span>VLESS</span></div>
             </div>
             <div class="protocol-card" data-protocol="trojan">
-                <div class="card-content">
-                    <i class="fa-solid fa-horse-head icon"></i>
-                    <span>Trojan</span>
-                </div>
+                <div class="card-content"><i class="fa-solid fa-horse-head icon"></i><span>Trojan</span></div>
             </div>
             <div class="protocol-card" data-protocol="ss">
-                <div class="card-content">
-                    <i class="fa-solid fa-ghost icon"></i>
-                    <span>ShadowSocks</span>
-                </div>
+                <div class="card-content"><i class="fa-solid fa-ghost icon"></i><span>ShadowSocks</span></div>
             </div>
              <div class="protocol-card" data-protocol="sstp">
-                <div class="card-content">
-                    <i class="fa-solid fa-lock icon"></i>
-                    <span>SSTP</span>
-                </div>
+                <div class="card-content"><i class="fa-solid fa-lock icon"></i><span>SSTP</span></div>
+            </div>
+            <div class="protocol-card" id="get-endpoints-btn">
+                <div class="card-content"><i class="fa-solid fa-dice icon"></i><span>دریافت اندپوینت</span></div>
             </div>
         </div>
 
@@ -54,9 +45,7 @@
                         <i class="fa-solid fa-copy"></i>
                     </button>
                 </div>
-                <div class="output-body">
-                    <pre id="sub-link-output"></pre>
-                    <div id="sstp-details-output"></div>
+                <div class="output-body" id="output-body">
                 </div>
             </div>
         </div>
@@ -64,7 +53,10 @@
 
     <footer class="page-footer">
         <p>
-            با حمایت از ما <i class="fa-solid fa-star"></i> در
+            <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Ff0rc3run.github.io%2FF0rc3Run-panel%2F&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=visits&edge_flat=false"/>
+        </p>
+        <p>
+            با حمایت ما در ⭐️ <i class="fa-solid fa-star"></i> در
             <a href="https://github.com/F0rc3Run/F0rc3Run" target="_blank" rel="noopener noreferrer">صفحه گیت‌هاب</a>
             به ما انگیزه بدهید.
         </p>
