@@ -9,15 +9,15 @@ document.addEventListener('DOMContentLoaded', () => {
     let isProcessing = false;
     let currentContentToCopy = '';
 
-    // --- بخش مربوط به دریافت کانفیگ ---
+    // --- بخش مربوط به دریافت کانفیگ (با آدرس‌های جدید و نوع عملکرد) ---
     const protocols = {
-        vless: { type: 'sub', url: 'https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/splitted-by-protocol/vless/vless_part1.txt' },
-        trojan: { type: 'sub', url: 'https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/splitted-by-protocol/trojan/trojan_part1.txt' },
-        ss: { type: 'sub', url: 'https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/splitted-by-protocol/ss/ss.txt' },
-        sstp: { type: 'sstp', url: 'https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/sstp-configs/sstp_with_country.txt' }
+        vless: { type: 'show_url', url: 'https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/splitted-by-protocol/vless/vless_part1.txt' },
+        trojan: { type: 'show_url', url: 'https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/splitted-by-protocol/trojan/trojan_part1.txt' },
+        ss: { type: 'show_url', url: 'https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/splitted-by-protocol/ss/ss.txt' },
+        sstp: { type: 'random_sstp', url: 'https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/sstp-configs/sstp_with_country.txt' }
     };
 
-    // --- بخش مربوط به دریافت اندپوینت (با آدرس URL راه دور) ---
+    // --- بخش مربوط به دریافت اندپوینت ---
     const resultsUrl = 'https://raw.githubusercontent.com/F0rc3Run/free-warp-endpoints/refs/heads/main/docs/results.json'; 
     let allEndpoints = [];
     
@@ -69,36 +69,52 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 30);
     }
     
+    // --- تابع اصلی مدیریت کلیک روی پروتکل‌ها (بازنویسی شده) ---
     async function handleProtocolClick(protocolKey, card) {
         startLoading(card);
         const protocol = protocols[protocolKey];
-        showOutputContainer(`لینک اشتراک ${protocolKey.toUpperCase()}`);
+        showOutputContainer(`نتیجه برای ${protocolKey.toUpperCase()}`);
         
-        try {
-            const response = await fetch(`${protocol.url}?v=${new Date().getTime()}`);
-            let content = await response.text();
-            
-            outputBody.innerHTML = `<pre></pre>`;
-            const preElement = outputBody.querySelector('pre');
-            
-            if (protocol.type === 'sstp') {
-                const lines = content.split('\n').filter(line => line.trim() !== '');
-                const randomServer = lines[Math.floor(Math.random() * lines.length)];
-                content = `Server: ${randomServer.split(',')[0]}\nUsername: sstp\nPassword: sstp`;
-                outputTitle.textContent = 'اطلاعات سرور SSTP';
-            }
-            
+        outputBody.innerHTML = `<pre></pre>`;
+        const preElement = outputBody.querySelector('pre');
+        let content = '';
+
+        if (protocol.type === 'show_url') {
+            // برای vless, trojan, ss فقط URL را نمایش بده
+            content = protocol.url;
             currentContentToCopy = content;
             copyMainBtn.style.display = 'block';
-
             typeEffect(preElement, content, () => stopLoading(card));
 
-        } catch (error) {
-            outputBody.innerHTML = `<pre>خطا در دریافت اطلاعات.</pre>`;
-            stopLoading(card);
+        } else if (protocol.type === 'random_sstp') {
+            // برای sstp یک سرور تصادفی با فرمت جدید نمایش بده
+            outputTitle.textContent = 'اطلاعات سرور SSTP';
+            try {
+                const response = await fetch(`${protocol.url}?v=${new Date().getTime()}`);
+                const textContent = await response.text();
+                const lines = textContent.split('\n').filter(line => line.trim() !== '');
+
+                if (lines.length > 0) {
+                    const randomLine = lines[Math.floor(Math.random() * lines.length)];
+                    const serverAndPort = randomLine.split(',')[0].trim(); // استخراج بخش سرور و پورت
+                    content = `Hostname : ${serverAndPort}\nUsername : vpn\nPassword : vpn`;
+                } else {
+                    content = 'لیست سرورهای SSTP خالی است.';
+                }
+                
+                currentContentToCopy = content;
+                copyMainBtn.style.display = 'block';
+                typeEffect(preElement, content, () => stopLoading(card));
+
+            } catch (error) {
+                content = 'خطا در دریافت اطلاعات سرور SSTP.';
+                preElement.textContent = content;
+                stopLoading(card);
+            }
         }
     }
 
+    // تابع برای نمایش اندپوینت‌های پیشنهادی (بدون تغییر)
     function handleEndpointClick(card) {
         if (allEndpoints.length === 0) {
             alert('لیست سرورها هنوز بارگذاری نشده یا خالی است. لطفاً کمی صبر کنید و دوباره تلاش کنید.');
@@ -135,7 +151,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Event Listeners ---
-
     protocolGrid.addEventListener('click', (event) => {
         if (isProcessing) return;
         const card = event.target.closest('.protocol-card');
