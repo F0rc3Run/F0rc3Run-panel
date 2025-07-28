@@ -11,10 +11,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- بخش مربوط به دریافت کانفیگ ---
     const protocols = {
-        vless: { type: 'sub', url: 'https://raw.githubusercontent.com/F0rc3Run/V2ray-Layer/main/Vless-Sub' },
-        trojan: { type: 'sub', url: 'https://raw.githubusercontent.com/F0rc3Run/V2ray-Layer/main/Trojan-Sub' },
-        ss: { type: 'sub', url: 'https://raw.githubusercontent.com/F0rc3Run/V2ray-Layer/main/ShadowSocks-Sub' },
-        sstp: { type: 'sstp', url: 'https://raw.githubusercontent.com/F0rc3Run/SSTP-Scanner/main/output/SSTP-List.txt' }
+        vless: { type: 'sub', url: 'https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/splitted-by-protocol/vless/vless_part1.txt' },
+        trojan: { type: 'sub', url: 'https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/splitted-by-protocol/trojan/trojan_part1.txt' },
+        ss: { type: 'sub', url: 'https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/splitted-by-protocol/ss/ss.txt' },
+        sstp: { type: 'sstp', url: 'https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/sstp-configs/sstp_with_country.txt' }
     };
 
     // --- بخش مربوط به دریافت اندپوینت (با آدرس URL راه دور) ---
