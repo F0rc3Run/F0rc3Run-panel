@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let isProcessing = false;
     let currentContentToCopy = '';
 
-    // --- بخش مربوط به دریافت کانفیگ (با آدرس‌های جدید و نوع عملکرد) ---
+    // --- بخش مربوط به دریافت کانفیگ ---
     const protocols = {
         vless: { type: 'show_url', url: 'https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/splitted-by-protocol/vless/vless_part1.txt' },
         trojan: { type: 'show_url', url: 'https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/splitted-by-protocol/trojan/trojan_part1.txt' },
@@ -69,7 +69,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 30);
     }
     
-    // --- تابع اصلی مدیریت کلیک روی پروتکل‌ها (بازنویسی شده) ---
     async function handleProtocolClick(protocolKey, card) {
         startLoading(card);
         const protocol = protocols[protocolKey];
@@ -80,14 +79,12 @@ document.addEventListener('DOMContentLoaded', () => {
         let content = '';
 
         if (protocol.type === 'show_url') {
-            // برای vless, trojan, ss فقط URL را نمایش بده
             content = protocol.url;
             currentContentToCopy = content;
             copyMainBtn.style.display = 'block';
             typeEffect(preElement, content, () => stopLoading(card));
 
         } else if (protocol.type === 'random_sstp') {
-            // برای sstp یک سرور تصادفی با فرمت جدید نمایش بده
             outputTitle.textContent = 'اطلاعات سرور SSTP';
             try {
                 const response = await fetch(`${protocol.url}?v=${new Date().getTime()}`);
@@ -96,8 +93,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (lines.length > 0) {
                     const randomLine = lines[Math.floor(Math.random() * lines.length)];
-                    const serverAndPort = randomLine.split(',')[0].trim(); // استخراج بخش سرور و پورت
-                    content = `Hostname : ${serverAndPort}\nUsername : vpn\nPassword : vpn`;
+                    let serverInfo = randomLine.split(',')[0].trim();
+                    
+                    // *** این خط تغییر کرده است ***
+                    // اگر "|" وجود داشت، فقط قسمت بعد از آن را برمی‌دارد
+                    if (serverInfo.includes('|')) {
+                        serverInfo = serverInfo.split('|')[1].trim();
+                    }
+                    
+                    content = `Hostname : ${serverInfo}\nUsername : vpn\nPassword : vpn`;
                 } else {
                     content = 'لیست سرورهای SSTP خالی است.';
                 }
@@ -114,7 +118,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // تابع برای نمایش اندپوینت‌های پیشنهادی (بدون تغییر)
     function handleEndpointClick(card) {
         if (allEndpoints.length === 0) {
             alert('لیست سرورها هنوز بارگذاری نشده یا خالی است. لطفاً کمی صبر کنید و دوباره تلاش کنید.');
