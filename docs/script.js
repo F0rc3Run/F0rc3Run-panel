@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if(icon) icon.classList.remove('processing');
     }
 
-    // تابع افکت تایپ که بازگردانده شد
+    // سرعت تایپ کندتر شد
     function typeEffect(element, text, callback) {
         let i = 0;
         element.innerHTML = "";
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 element.classList.remove('typing-cursor');
                 if (callback) callback();
             }
-        }, 20); // سرعت تایپ
+        }, 60); // سرعت از 20 به 60 تغییر کرد
     }
     
     async function handleProtocolClick(protocolKey, card) {
@@ -71,7 +71,6 @@ document.addEventListener('DOMContentLoaded', () => {
         showOutputContainer(`Result for ${protocolKey.toUpperCase()}`);
         
         if (protocol.type === 'show_url') {
-            // ایجاد المان pre و سپس فراخوانی افکت تایپ
             outputBody.innerHTML = `<pre></pre>`;
             const preElement = outputBody.querySelector('pre');
             const content = protocol.url;
@@ -93,35 +92,53 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     const [hostname, port] = serverInfo.split(':');
 
+                    // ایجاد ساختار HTML خالی
                     const sstpHTML = `
                         <div class="sstp-details-list">
                             <div class="sstp-detail-item">
                                 <span class="label">Hostname:</span>
-                                <span class="value">${hostname}</span>
+                                <span class="value" id="sstp-hostname"></span>
                                 <button class="copy-btn" data-copy="${hostname}" title="Copy Hostname"><i class="fa-solid fa-copy"></i></button>
                             </div>
                             <div class="sstp-detail-item">
                                 <span class="label">Port:</span>
-                                <span class="value">${port}</span>
+                                <span class="value" id="sstp-port"></span>
                                 <button class="copy-btn" data-copy="${port}" title="Copy Port"><i class="fa-solid fa-copy"></i></button>
                             </div>
                             <div class="sstp-detail-item">
                                 <span class="label">Username:</span>
-                                <span class="value">vpn</span>
+                                <span class="value" id="sstp-user"></span>
                                 <button class="copy-btn" data-copy="vpn" title="Copy Username"><i class="fa-solid fa-copy"></i></button>
                             </div>
                             <div class="sstp-detail-item">
                                 <span class="label">Password:</span>
-                                <span class="value">vpn</span>
+                                <span class="value" id="sstp-pass"></span>
                                 <button class="copy-btn" data-copy="vpn" title="Copy Password"><i class="fa-solid fa-copy"></i></button>
                             </div>
                         </div>
                     `;
                     outputBody.innerHTML = sstpHTML;
+
+                    // گرفتن رفرنس به المان‌های خالی و پر کردن آنها با افکت تایپ
+                    const hostEl = document.getElementById('sstp-hostname');
+                    const portEl = document.getElementById('sstp-port');
+                    const userEl = document.getElementById('sstp-user');
+                    const passEl = document.getElementById('sstp-pass');
+
+                    typeEffect(hostEl, hostname, () => {
+                        typeEffect(portEl, port, () => {
+                            typeEffect(userEl, 'vpn', () => {
+                                typeEffect(passEl, 'vpn', () => {
+                                    stopLoading(card);
+                                });
+                            });
+                        });
+                    });
+
                 } else {
                     outputBody.innerHTML = `<p>SSTP server list is empty.</p>`;
+                    stopLoading(card);
                 }
-                stopLoading(card);
 
             } catch (error) {
                 outputBody.innerHTML = `<p>Error fetching SSTP server info.</p>`;
