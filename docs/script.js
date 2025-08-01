@@ -4,8 +4,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const outputContainer = document.getElementById('output-container');
     const outputTitle = document.getElementById('output-title');
     const outputBody = document.getElementById('output-body');
+    const copyMainBtn = document.querySelector('.copy-main-btn'); // دکمه کپی اصلی
     
     let isProcessing = false;
+    let currentContentToCopy = ''; // متغیر برای نگهداری محتوای قابل کپی
 
     // --- Configs and Endpoints Data ---
     const protocols = {
@@ -29,7 +31,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     // --- Core Functions ---
-
     function showOutputContainer(title) {
         outputContainer.style.display = 'block';
         outputTitle.textContent = title;
@@ -48,7 +49,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if(icon) icon.classList.remove('processing');
     }
 
-    // سرعت تایپ کندتر شد
     function typeEffect(element, text, callback) {
         let i = 0;
         element.innerHTML = "";
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 element.classList.remove('typing-cursor');
                 if (callback) callback();
             }
-        }, 60); // سرعت از 20 به 60 تغییر کرد
+        }, 60);
     }
     
     async function handleProtocolClick(protocolKey, card) {
@@ -74,9 +74,16 @@ document.addEventListener('DOMContentLoaded', () => {
             outputBody.innerHTML = `<pre></pre>`;
             const preElement = outputBody.querySelector('pre');
             const content = protocol.url;
+
+            // مقداردهی متغیر و نمایش دکمه کپی اصلی
+            currentContentToCopy = content;
+            copyMainBtn.style.display = 'block';
+
             typeEffect(preElement, content, () => stopLoading(card));
 
         } else if (protocol.type === 'random_sstp') {
+            // مخفی کردن دکمه کپی اصلی
+            copyMainBtn.style.display = 'none';
             outputTitle.textContent = 'SSTP Server Info';
             try {
                 const response = await fetch(`${protocol.url}?v=${new Date().getTime()}`);
@@ -91,55 +98,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                     
                     const [hostname, port] = serverInfo.split(':');
-
-                    // ایجاد ساختار HTML خالی
-                    const sstpHTML = `
+                    outputBody.innerHTML = `
                         <div class="sstp-details-list">
-                            <div class="sstp-detail-item">
-                                <span class="label">Hostname:</span>
-                                <span class="value" id="sstp-hostname"></span>
-                                <button class="copy-btn" data-copy="${hostname}" title="Copy Hostname"><i class="fa-solid fa-copy"></i></button>
-                            </div>
-                            <div class="sstp-detail-item">
-                                <span class="label">Port:</span>
-                                <span class="value" id="sstp-port"></span>
-                                <button class="copy-btn" data-copy="${port}" title="Copy Port"><i class="fa-solid fa-copy"></i></button>
-                            </div>
-                            <div class="sstp-detail-item">
-                                <span class="label">Username:</span>
-                                <span class="value" id="sstp-user"></span>
-                                <button class="copy-btn" data-copy="vpn" title="Copy Username"><i class="fa-solid fa-copy"></i></button>
-                            </div>
-                            <div class="sstp-detail-item">
-                                <span class="label">Password:</span>
-                                <span class="value" id="sstp-pass"></span>
-                                <button class="copy-btn" data-copy="vpn" title="Copy Password"><i class="fa-solid fa-copy"></i></button>
-                            </div>
+                            <div class="sstp-detail-item"><span class="label">Hostname:</span><span class="value">${hostname}</span><button class="copy-btn" data-copy="${hostname}" title="Copy"><i class="fa-solid fa-copy"></i></button></div>
+                            <div class="sstp-detail-item"><span class="label">Port:</span><span class="value">${port}</span><button class="copy-btn" data-copy="${port}" title="Copy"><i class="fa-solid fa-copy"></i></button></div>
+                            <div class="sstp-detail-item"><span class="label">Username:</span><span class="value">vpn</span><button class="copy-btn" data-copy="vpn" title="Copy"><i class="fa-solid fa-copy"></i></button></div>
+                            <div class="sstp-detail-item"><span class="label">Password:</span><span class="value">vpn</span><button class="copy-btn" data-copy="vpn" title="Copy"><i class="fa-solid fa-copy"></i></button></div>
                         </div>
                     `;
-                    outputBody.innerHTML = sstpHTML;
-
-                    // گرفتن رفرنس به المان‌های خالی و پر کردن آنها با افکت تایپ
-                    const hostEl = document.getElementById('sstp-hostname');
-                    const portEl = document.getElementById('sstp-port');
-                    const userEl = document.getElementById('sstp-user');
-                    const passEl = document.getElementById('sstp-pass');
-
-                    typeEffect(hostEl, hostname, () => {
-                        typeEffect(portEl, port, () => {
-                            typeEffect(userEl, 'vpn', () => {
-                                typeEffect(passEl, 'vpn', () => {
-                                    stopLoading(card);
-                                });
-                            });
-                        });
-                    });
-
                 } else {
                     outputBody.innerHTML = `<p>SSTP server list is empty.</p>`;
-                    stopLoading(card);
                 }
-
+                stopLoading(card);
             } catch (error) {
                 outputBody.innerHTML = `<p>Error fetching SSTP server info.</p>`;
                 stopLoading(card);
@@ -148,31 +118,32 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function handleEndpointClick(card) {
+        startLoading(card);
+        // مخفی کردن دکمه کپی اصلی
+        copyMainBtn.style.display = 'none';
+        showOutputContainer('Suggested Endpoints');
+
         if (allEndpoints.length === 0) {
             alert('Server list is not loaded yet. Please wait a moment and try again.');
+            stopLoading(card);
             return;
         }
         
-        startLoading(card);
-        showOutputContainer('Suggested Endpoints');
-
         const randomEndpoints = [...allEndpoints].sort(() => 0.5 - Math.random()).slice(0, 5);
-        
         if (randomEndpoints.length > 0) {
             const list = document.createElement('div');
             list.className = 'endpoint-results-list';
-            outputBody.appendChild(list);
-
             randomEndpoints.forEach((endpoint) => {
                 const item = document.createElement('div');
                 item.className = 'endpoint-item';
                 item.innerHTML = `
                     <div class="icon-wrapper"><i class="fa-solid fa-server"></i></div>
                     <div class="details"><span class="endpoint-ip">${endpoint}</span></div>
-                    <button class="copy-btn" data-copy="${endpoint}" title="Copy Endpoint"><i class="fa-solid fa-copy"></i></button>
+                    <button class="copy-btn" data-copy="${endpoint}" title="Copy"><i class="fa-solid fa-copy"></i></button>
                 `;
                 list.appendChild(item);
             });
+            outputBody.appendChild(list);
         } else {
             outputBody.innerHTML = `<p>No endpoints found to display.</p>`;
         }
@@ -192,6 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     
+    // Event listener برای دکمه‌های کپی کوچک
     outputBody.addEventListener('click', (event) => {
         const copyBtn = event.target.closest('.copy-btn');
         if (!copyBtn) return;
@@ -199,6 +171,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const textToCopy = copyBtn.dataset.copy;
         navigator.clipboard.writeText(textToCopy).then(() => {
             const icon = copyBtn.querySelector('i');
+            icon.classList.remove('fa-copy');
+            icon.classList.add('fa-check');
+            setTimeout(() => {
+                icon.classList.remove('fa-check');
+                icon.classList.add('fa-copy');
+            }, 1500);
+        });
+    });
+
+    // Event listener برای دکمه کپی اصلی
+    copyMainBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(currentContentToCopy).then(() => {
+            const icon = copyMainBtn.querySelector('i');
             icon.classList.remove('fa-copy');
             icon.classList.add('fa-check');
             setTimeout(() => {
