@@ -85,7 +85,24 @@ body {
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
 }
-#output-title { font-family: var(--font-mono); color: var(--text-secondary); }
+#output-title { 
+    font-family: var(--font-mono); 
+    color: var(--text-secondary); 
+    flex-grow: 1;
+    text-align: right;
+}
+
+/* Style for the main copy button in the header */
+.copy-main-btn { 
+    background: none; 
+    border: none; 
+    color: var(--text-secondary); 
+    cursor: pointer; 
+    font-size: 1.1rem; 
+    transition: color 0.2s;
+    padding-right: 10px;
+}
+.copy-main-btn:hover { color: var(--primary-color); }
 
 .output-body { padding: 20px; font-family: var(--font-mono); }
 #output-body pre { white-space: pre-wrap; word-break: break-all; color: white; min-height: 50px; }
@@ -105,13 +122,9 @@ body {
     border: 1px solid var(--border-color);
     border-radius: 8px;
     padding: 15px;
-    opacity: 0;
-    transform: translateY(20px);
-    animation: slideIn 0.5s ease forwards;
 }
-@keyframes slideIn { to { opacity: 1; transform: translateY(0); } }
 .endpoint-item .icon-wrapper { font-size: 1.5rem; color: var(--primary-color); margin-right: 15px; }
-.endpoint-item .details { flex-grow: 1; }
+.endpoint-item .details { flex-grow: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .details .endpoint-ip { font-family: var(--font-mono); color: white; font-size: 1.1rem; }
 
 
@@ -151,6 +164,7 @@ body {
     align-items: center;
     transition: all 0.2s ease;
     margin-left: 15px;
+    flex-shrink: 0;
 }
 .copy-btn:hover { color: var(--primary-color); border-color: var(--primary-color); }
 
@@ -158,7 +172,6 @@ body {
 /* Footer Styles */
 .page-footer {
     width: 100%; max-width: 700px; text-align: center; margin-top: 50px; padding-bottom: 20px;
-    animation: fadeIn 1s ease 0.5s; animation-fill-mode: forwards; opacity: 0;
 }
 .page-footer p { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.7; margin: 15px 0; }
 .page-footer a {
