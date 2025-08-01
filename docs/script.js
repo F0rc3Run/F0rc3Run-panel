@@ -47,6 +47,23 @@ document.addEventListener('DOMContentLoaded', () => {
         const icon = card.querySelector('.icon');
         if(icon) icon.classList.remove('processing');
     }
+
+    // تابع افکت تایپ که بازگردانده شد
+    function typeEffect(element, text, callback) {
+        let i = 0;
+        element.innerHTML = "";
+        element.classList.add('typing-cursor');
+        const interval = setInterval(() => {
+            if (i < text.length) {
+                element.textContent += text.charAt(i);
+                i++;
+            } else {
+                clearInterval(interval);
+                element.classList.remove('typing-cursor');
+                if (callback) callback();
+            }
+        }, 20); // سرعت تایپ
+    }
     
     async function handleProtocolClick(protocolKey, card) {
         startLoading(card);
@@ -54,9 +71,11 @@ document.addEventListener('DOMContentLoaded', () => {
         showOutputContainer(`Result for ${protocolKey.toUpperCase()}`);
         
         if (protocol.type === 'show_url') {
+            // ایجاد المان pre و سپس فراخوانی افکت تایپ
+            outputBody.innerHTML = `<pre></pre>`;
+            const preElement = outputBody.querySelector('pre');
             const content = protocol.url;
-            outputBody.innerHTML = `<pre>${content}</pre>`;
-            stopLoading(card);
+            typeEffect(preElement, content, () => stopLoading(card));
 
         } else if (protocol.type === 'random_sstp') {
             outputTitle.textContent = 'SSTP Server Info';
