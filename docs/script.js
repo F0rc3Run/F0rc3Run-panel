@@ -4,10 +4,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const outputContainer = document.getElementById('output-container');
     const outputTitle = document.getElementById('output-title');
     const outputBody = document.getElementById('output-body');
-    const copyMainBtn = document.querySelector('.copy-main-btn'); // دکمه کپی اصلی
+    const copyMainBtn = document.querySelector('.copy-main-btn');
     
     let isProcessing = false;
-    let currentContentToCopy = ''; // متغیر برای نگهداری محتوای قابل کپی
+    let currentContentToCopy = '';
 
     // --- Configs and Endpoints Data ---
     const protocols = {
@@ -75,14 +75,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const preElement = outputBody.querySelector('pre');
             const content = protocol.url;
 
-            // مقداردهی متغیر و نمایش دکمه کپی اصلی
             currentContentToCopy = content;
             copyMainBtn.style.display = 'block';
 
             typeEffect(preElement, content, () => stopLoading(card));
 
         } else if (protocol.type === 'random_sstp') {
-            // مخفی کردن دکمه کپی اصلی
             copyMainBtn.style.display = 'none';
             outputTitle.textContent = 'SSTP Server Info';
             try {
@@ -98,18 +96,35 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                     
                     const [hostname, port] = serverInfo.split(':');
+                    
                     outputBody.innerHTML = `
                         <div class="sstp-details-list">
-                            <div class="sstp-detail-item"><span class="label">Hostname:</span><span class="value">${hostname}</span><button class="copy-btn" data-copy="${hostname}" title="Copy"><i class="fa-solid fa-copy"></i></button></div>
-                            <div class="sstp-detail-item"><span class="label">Port:</span><span class="value">${port}</span><button class="copy-btn" data-copy="${port}" title="Copy"><i class="fa-solid fa-copy"></i></button></div>
-                            <div class="sstp-detail-item"><span class="label">Username:</span><span class="value">vpn</span><button class="copy-btn" data-copy="vpn" title="Copy"><i class="fa-solid fa-copy"></i></button></div>
-                            <div class="sstp-detail-item"><span class="label">Password:</span><span class="value">vpn</span><button class="copy-btn" data-copy="vpn" title="Copy"><i class="fa-solid fa-copy"></i></button></div>
+                            <div class="sstp-detail-item"><span class="label">Hostname:</span><span class="value" id="sstp-hostname"></span><button class="copy-btn" data-copy="${hostname}" title="Copy"><i class="fa-solid fa-copy"></i></button></div>
+                            <div class="sstp-detail-item"><span class="label">Port:</span><span class="value" id="sstp-port"></span><button class="copy-btn" data-copy="${port}" title="Copy"><i class="fa-solid fa-copy"></i></button></div>
+                            <div class="sstp-detail-item"><span class="label">Username:</span><span class="value" id="sstp-user"></span><button class="copy-btn" data-copy="vpn" title="Copy"><i class="fa-solid fa-copy"></i></button></div>
+                            <div class="sstp-detail-item"><span class="label">Password:</span><span class="value" id="sstp-pass"></span><button class="copy-btn" data-copy="vpn" title="Copy"><i class="fa-solid fa-copy"></i></button></div>
                         </div>
                     `;
+                    
+                    const hostEl = document.getElementById('sstp-hostname');
+                    const portEl = document.getElementById('sstp-port');
+                    const userEl = document.getElementById('sstp-user');
+                    const passEl = document.getElementById('sstp-pass');
+
+                    typeEffect(hostEl, hostname, () => {
+                        typeEffect(portEl, port, () => {
+                            typeEffect(userEl, 'vpn', () => {
+                                typeEffect(passEl, 'vpn', () => {
+                                    stopLoading(card);
+                                });
+                            });
+                        });
+                    });
+
                 } else {
                     outputBody.innerHTML = `<p>SSTP server list is empty.</p>`;
+                    stopLoading(card);
                 }
-                stopLoading(card);
             } catch (error) {
                 outputBody.innerHTML = `<p>Error fetching SSTP server info.</p>`;
                 stopLoading(card);
@@ -119,7 +134,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function handleEndpointClick(card) {
         startLoading(card);
-        // مخفی کردن دکمه کپی اصلی
         copyMainBtn.style.display = 'none';
         showOutputContainer('Suggested Endpoints');
 
@@ -163,7 +177,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     
-    // Event listener برای دکمه‌های کپی کوچک
     outputBody.addEventListener('click', (event) => {
         const copyBtn = event.target.closest('.copy-btn');
         if (!copyBtn) return;
@@ -180,7 +193,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Event listener برای دکمه کپی اصلی
     copyMainBtn.addEventListener('click', () => {
         navigator.clipboard.writeText(currentContentToCopy).then(() => {
             const icon = copyMainBtn.querySelector('i');
