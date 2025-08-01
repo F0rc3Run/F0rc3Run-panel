@@ -86,8 +86,6 @@ body {
     border-top-right-radius: 8px;
 }
 #output-title { font-family: var(--font-mono); color: var(--text-secondary); }
-.copy-main-btn { background: none; border: none; color: var(--text-secondary); cursor: pointer; font-size: 1.1rem; transition: color 0.2s; }
-.copy-main-btn:hover { color: var(--primary-color); }
 
 .output-body { padding: 20px; font-family: var(--font-mono); }
 #output-body pre { white-space: pre-wrap; word-break: break-all; color: white; min-height: 50px; }
@@ -98,6 +96,7 @@ body {
 }
 @keyframes blink { 50% { opacity: 0; } }
 
+/* Endpoint styles */
 .endpoint-results-list { display: flex; flex-direction: column; gap: 15px; }
 .endpoint-item {
     display: flex;
@@ -111,26 +110,52 @@ body {
     animation: slideIn 0.5s ease forwards;
 }
 @keyframes slideIn { to { opacity: 1; transform: translateY(0); } }
-
-.endpoint-item .icon-wrapper { font-size: 1.5rem; color: var(--primary-color); margin-left: 15px; }
+.endpoint-item .icon-wrapper { font-size: 1.5rem; color: var(--primary-color); margin-right: 15px; }
 .endpoint-item .details { flex-grow: 1; }
 .details .endpoint-ip { font-family: var(--font-mono); color: white; font-size: 1.1rem; }
-.copy-endpoint-btn {
+
+
+/* Styles for SSTP details */
+.sstp-details-list { display: flex; flex-direction: column; gap: 10px; }
+.sstp-detail-item {
+    display: flex;
+    align-items: center;
+    background-color: #0d1117;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 10px 15px;
+    font-size: 1rem;
+}
+.sstp-detail-item .label {
+    color: var(--text-secondary);
+    width: 100px;
+}
+.sstp-detail-item .value {
+    color: white;
+    font-family: var(--font-mono);
+    flex-grow: 1;
+}
+
+/* General style for small copy buttons */
+.copy-btn {
     background: none;
     border: 1px solid var(--border-color);
     color: var(--text-secondary);
-    width: 40px;
-    height: 40px;
+    width: 35px;
+    height: 35px;
     border-radius: 50%;
     cursor: pointer;
-    font-size: 1rem;
+    font-size: 0.9rem;
     display: flex;
     justify-content: center;
     align-items: center;
     transition: all 0.2s ease;
+    margin-left: 15px;
 }
-.copy-endpoint-btn:hover { color: var(--primary-color); border-color: var(--primary-color); }
+.copy-btn:hover { color: var(--primary-color); border-color: var(--primary-color); }
 
+
+/* Footer Styles */
 .page-footer {
     width: 100%; max-width: 700px; text-align: center; margin-top: 50px; padding-bottom: 20px;
     animation: fadeIn 1s ease 0.5s; animation-fill-mode: forwards; opacity: 0;
