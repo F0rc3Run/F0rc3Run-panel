@@ -161,3 +161,11 @@ body {
 .page-footer a:hover { color: var(--primary-color); border-bottom-color: var(--primary-color); }
 .page-footer .fa-star { color: #ffac33; }
 .page-footer .fa-telegram { color: #2AABEE; font-size: 1.1rem; vertical-align: middle; }
+#matrix-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+}
