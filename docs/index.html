@@ -85,5 +85,52 @@
     <script>
 navigator.sendBeacon("https://panel-loader.endpointcache.workers.dev/log");
     </script>
+<script>
+        const canvas = document.getElementById('matrix-canvas');
+        const context = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
+        const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        const nums = '0123456789';
+        const alphabet = katakana + latin + nums;
+
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+
+        const rainDrops = [];
+        for (let x = 0; x < columns; x++) {
+            rainDrops[x] = 1;
+        }
+
+        const draw = () => {
+            context.fillStyle = 'rgba(17, 24, 39, 0.05)'; // رنگ پس‌زمینه با شفافیت برای ایجاد دنباله
+            context.fillRect(0, 0, canvas.width, canvas.height);
+
+            context.fillStyle = '#6d28d9'; // رنگ کاراکترها (بنفش تم شما)
+            context.font = fontSize + 'px monospace';
+
+            for (let i = 0; i < rainDrops.length; i++) {
+                const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+                context.fillText(text, i * fontSize, rainDrops[i] * fontSize);
+
+                if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    rainDrops[i] = 0;
+                }
+                rainDrops[i]++;
+            }
+        };
+
+        setInterval(draw, 30);
+
+        // Resize canvas when window size changes
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            // Recalculate columns if you want it to be fully responsive
+        });
+    </script>
 </body>
 </html>
