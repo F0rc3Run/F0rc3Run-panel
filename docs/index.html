@@ -12,24 +12,6 @@
 </head>
 <body>
     <canvas id="matrix-canvas"></canvas> <div class="background-grid"></div>
-    ```
-
-#### مرحله ۲: استایل‌دهی در `style.css`
-
-حالا باید به این `canvas` استایل بدهیم تا به عنوان یک پس‌زمینه تمام‌صفحه و در پشت تمام محتوای دیگر قرار بگیرد.
-
-کد زیر را به **انتهای فایل `style.css`** خود اضافه کنید:
-
-```css
-/* این بخش را به انتهای فایل style.css اضافه کنید */
-#matrix-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -2; /* باعث می‌شود پشت همه چیز، حتی گرید، قرار بگیرد */
-}
     <div class="background-grid"></div>
     <div class="container">
         <header class="main-header">
