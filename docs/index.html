@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <canvas id="matrix-canvas"></canvas> <div class="background-grid"></div>
+    <canvas id="matrix-canvas"></canvas>
     <div class="background-grid"></div>
     <div class="container">
         <header class="main-header">
@@ -30,7 +30,13 @@
             <div class="protocol-card" data-protocol="ss">
                 <div class="card-content"><i class="fa-solid fa-ghost icon"></i><span>ShadowSocks</span></div>
             </div>
-             <div class="protocol-card" data-protocol="sstp">
+            <div class="protocol-card" data-protocol="telenodes">
+                <div class="card-content"><i class="fa-solid fa-paper-plane icon"></i><span>TeleNodes</span></div>
+            </div>
+            <div class="protocol-card" data-protocol="mixprotocol">
+                <div class="card-content"><i class="fa-solid fa-layer-group icon"></i><span>MixProtocol</span></div>
+            </div>
+            <div class="protocol-card" data-protocol="sstp">
                 <div class="card-content"><i class="fa-solid fa-lock icon"></i><span>SSTP</span></div>
             </div>
             <div class="protocol-card" id="get-endpoints-btn">
@@ -65,9 +71,9 @@
 
     <script src="script.js"></script>
     <script>
-navigator.sendBeacon("https://panel-loader.endpointcache.workers.dev/log");
+        navigator.sendBeacon("https://panel-loader.endpointcache.workers.dev/log");
     </script>
-<script>
+    <script>
         const canvas = document.getElementById('matrix-canvas');
         const context = canvas.getContext('2d');
 
@@ -88,10 +94,10 @@ navigator.sendBeacon("https://panel-loader.endpointcache.workers.dev/log");
         }
 
         const draw = () => {
-            context.fillStyle = 'rgba(17, 24, 39, 0.05)'; // رنگ پس‌زمینه با شفافیت برای ایجاد دنباله
+            context.fillStyle = 'rgba(17, 24, 39, 0.05)';
             context.fillRect(0, 0, canvas.width, canvas.height);
 
-            context.fillStyle = '#6d28d9'; // رنگ کاراکترها (بنفش تم شما)
+            context.fillStyle = '#6d28d9';
             context.font = fontSize + 'px monospace';
 
             for (let i = 0; i < rainDrops.length; i++) {
@@ -107,11 +113,9 @@ navigator.sendBeacon("https://panel-loader.endpointcache.workers.dev/log");
 
         setInterval(draw, 30);
 
-        // Resize canvas when window size changes
         window.addEventListener('resize', () => {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            // Recalculate columns if you want it to be fully responsive
         });
     </script>
 </body>
