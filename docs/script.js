@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
         trojan: { type: 'show_url', url: 'https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/main/splitted-by-protocol/trojan/trojan_part1.txt' },
         ss: { type: 'show_url', url: 'https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/main/splitted-by-protocol/ss/ss.txt' },
         telenodes: { type: 'show_url', url: 'https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/main/Special/Telegram.txt' },
-        mixprotocol: { type: 'show_url', url: 'https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/main/splitted-by-country/all.raw.txt' },
+        mixprotocol: { type: 'show_url', url: 'https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/main/splitted-by-country/DE.txt' },
         sstp: { type: 'random_sstp', url: 'https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/main/sstp-configs/sstp_with_country.txt' }
     };
     const resultsUrl = 'https://raw.githubusercontent.com/F0rc3Run/free-warp-endpoints/main/docs/results.json'; 
