@@ -1,27 +1,263 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>F0rc3Run - Free Server Panel</title>
+    <title>F0rc3Run - Unified Panel</title>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<style>
+    /* --- Base Styles & Variables (Merged) --- */
+    :root {
+        --bg-color: #111827;
+        --card-color: #1f2937;
+        --border-color: #374151;
+        --primary-color: #818cf8; /* Indigo-400 */
+        --accent-color: #6d28d9; /* Purple-700 */
+        --text-color: #d1d5db;
+        --text-secondary: #9ca3af;
+        --success-color: #4ade80;
+        --font-primary: 'Vazirmatn', 'Inter', ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+        --font-mono: 'Fira Code', monospace;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+        font-family: var(--font-primary);
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 20px;
+        overflow-y: auto;
+    }
+
+    #matrix-canvas {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;
+    }
+    .background-grid {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background-image: linear-gradient(rgba(107, 114, 128, 0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(107, 114, 128, 0.2) 1px, transparent 1px);
+        background-size: 35px 35px; opacity: 0.3; z-index: -1;
+    }
+
+    /* --- Animations (Merged) --- */
+    @keyframes pulse-glow {
+        0%, 100% { transform: scale(1); box-shadow: 0 0 25px rgba(109, 40, 217, 0.6); }
+        50% { transform: scale(1.05); box-shadow: 0 0 40px rgba(139, 92, 246, 0.9); }
+    }
+    @keyframes animate-gradient {
+        to { background-position: 200% center; }
+    }
+    @keyframes send-kiss {
+        0% { transform: translate(-50%, 0) scale(1); opacity: 1; }
+        100% { transform: translate(-50%, -150px) scale(1.5); opacity: 0; }
+    }
+    .kiss-animation {
+        position: fixed; top: 100px; left: 50%; font-size: 48px; pointer-events: none; z-index: 100;
+        animation: send-kiss 1.5s ease-out forwards;
+    }
+    @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* --- Main Header (From Panel 1) --- */
+    .main-header {
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        padding: 40px 20px; text-align: center;
+    }
+    .main-header .logo {
+        width: 110px; height: 110px; border-radius: 22px; border: 3px solid var(--primary-color);
+        margin-bottom: 25px; animation: pulse-glow 4s ease-in-out infinite; cursor: pointer;
+    }
+    .main-header .brand {
+        font-weight: 700; font-size: 2.8rem; font-family: var(--font-mono);
+        background-image: linear-gradient(to right, #818cf8, #a78bfa, #f472b6, #a78bfa, #818cf8);
+        -webkit-background-clip: text; background-clip: text; color: transparent;
+        background-size: 200% auto; animation: animate-gradient 5s linear infinite;
+    }
+    .main-header .subtitle {
+        font-size: 1.2rem; /* Slightly larger for emoji */
+        color: var(--text-secondary); 
+        margin-top: 8px;
+    }
+
+    /* --- Panel 1: Server Management Layout --- */
+    .container {
+        width: 100%; max-width: 1200px; margin: 0 auto;
+        display: flex; flex-wrap: wrap; gap: 18px; padding: 0 18px 18px 18px;
+    }
+    .sidebar, .main {
+        background-color: rgba(31, 41, 55, 0.6); border: 1px solid rgba(139, 92, 246, 0.2);
+        border-radius: 12px; padding: 18px; box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .sidebar { flex: 1; min-width: 320px; }
+    .main { flex: 2; min-width: 320px; min-height: 60vh; }
+    
+    .h2{font-size:15px;color:var(--text-secondary);margin:0 0 10px 0; font-weight: 600;}
+    .field{margin-bottom:12px}
+    .field label{display:block;font-size:12px;color:var(--text-secondary);margin-bottom:6px}
+    .field input, .field select, .field textarea{
+      width:100%;padding:10px;border-radius:8px;background:#111827;border:1px solid #374151;color:#e6eef8;font-size:14px
+    }
+    .field textarea { min-height: 120px; resize: vertical; font-family: var(--font-mono); }
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:9px 12px;border-radius:8px;background:linear-gradient(90deg,var(--accent-color),var(--primary-color));color:white;border:none;cursor:pointer;font-weight:600; flex: 1;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(109, 40, 217, 0.3); }
+    .btn.ghost{background:transparent;border:1px solid #374151;color:var(--text-secondary)}
+    .small{padding:6px 8px;font-size:13px}
+    .filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+    .badge{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:rgba(55, 65, 81, 0.5);font-size:13px;color:var(--text-secondary);cursor:pointer;}
+    .list{display:grid;grid-template-columns:1fr;gap:10px;max-height: calc(100vh - 200px);overflow:auto;padding-right:6px}
+    .card{
+      background:rgba(17, 24, 39, 0.7);padding:12px;border-radius:10px;border:1px solid #374151;display:flex;flex-direction:column;gap:8px;
+      transition: transform 0.2s ease;
+    }
+    .card:hover { transform: translateX(5px); }
+    .row-between{display:flex;justify-content:space-between;align-items:center}
+    .meta{font-size:13px;color:var(--text-secondary)}
+    .controls{display:flex;gap:8px;flex-wrap:wrap}
+    .ctrl-btn{padding:6px 10px;border-radius:8px;border:none;background:#1f2937;color:var(--text-secondary);cursor:pointer}
+    .protocol-pill{padding:4px 8px;border-radius:6px;font-weight:700;font-size:12px}
+    .protocol-vmess{background:#1e293b;color:#9be7ff}
+    .protocol-vless{background:#042f2e;color:#9ff9d6}
+    .protocol-trojan{background:#2b1224;color:#ffb3d6}
+    .protocol-ss{background:#2b2b12;color:#fff1b3}
+    .protocol-other{background:#374151;color:#d1d5db}
+    .footer{
+      margin-top:12px;padding-top:10px;border-top:1px solid var(--border-color);font-size:13px;color:var(--text-secondary);display:flex;justify-content:space-between;align-items:center
+    }
+    .kv{font-size:13px;color:var(--text-secondary)}
+    .qr-modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(2,6,23,0.8);backdrop-filter:blur(5px);z-index:40}
+    .qr-inner{background:#0b0f14;padding:16px;border-radius:12px;border:1px solid var(--border-color);display:flex;gap:12px;align-items:center}
+    .download-all{margin-top:8px}
+
+    /* --- Panel 2: Service Fetcher Styles --- */
+    .service-container { width: 100%; max-width: 700px; text-align: center; margin-bottom: 40px; }
+    
+    .protocol-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 20px;
+    }
+    .protocol-card {
+        background-color: var(--card-color); border: 1px solid var(--border-color);
+        border-radius: 8px; padding: 30px; cursor: pointer;
+        transition: all 0.3s ease; position: relative; overflow: hidden;
+    }
+    .protocol-card:hover {
+        transform: translateY(-5px); border-color: var(--primary-color);
+        box-shadow: 0 0 25px rgba(129, 140, 248, 0.15);
+    }
+    .card-content { display: flex; flex-direction: column; align-items: center; gap: 15px; }
+    .icon { font-size: 2.5rem; color: var(--primary-color); transition: transform 1s ease-in-out; }
+    .icon.processing { transform: rotate(720deg) scale(1.2); }
+    .protocol-card span { font-size: 1.2rem; font-weight: 700; color: white; }
+    
+    .output-wrapper { min-height: 250px; margin-top: 30px; }
+    .output-container {
+        background-color: var(--card-color); border: 1px solid var(--border-color);
+        border-radius: 8px; text-align: left; display: none;
+        animation: fadeIn 0.5s ease;
+    }
+    .output-header {
+        display: flex; justify-content: space-between; align-items: center; padding: 10px 15px;
+        background-color: #111827; border-bottom: 1px solid var(--border-color);
+        border-top-left-radius: 8px; border-top-right-radius: 8px;
+    }
+    #output-title { font-family: var(--font-mono); color: var(--text-secondary); flex-grow: 1; text-align: right; }
+    .copy-main-btn { background: none; border: none; color: var(--text-secondary); cursor: pointer; font-size: 1.1rem; transition: color 0.2s; padding-right: 10px; }
+    .copy-main-btn:hover { color: var(--primary-color); }
+    .output-body { padding: 20px; font-family: var(--font-mono); }
+    #output-body pre { white-space: pre-wrap; word-break: break-all; color: white; min-height: 50px; background-color: #0d1117; padding: 15px; border-radius: 6px;}
+    .typing-cursor::after { content: '█'; animation: blink 0.7s step-end infinite; }
+    
+    .endpoint-results-list, .sstp-details-list { display: flex; flex-direction: column; gap: 15px; }
+    .endpoint-item, .sstp-detail-item {
+        display: flex; align-items: center; background-color: #111827;
+        border: 1px solid var(--border-color); border-radius: 8px; padding: 15px;
+    }
+    .sstp-detail-item { padding: 12px 15px; font-size: 1rem; }
+    .endpoint-item .icon-wrapper { font-size: 1.5rem; color: var(--primary-color); margin-right: 15px; }
+    .endpoint-item .details { flex-grow: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .details .endpoint-ip { font-family: var(--font-mono); color: white; font-size: 1.1rem; }
+    .sstp-detail-item .label { color: var(--text-secondary); width: 100px; }
+    .sstp-detail-item .value { color: white; font-family: var(--font-mono); flex-grow: 1; }
+    .copy-btn {
+        background: none; border: 1px solid var(--border-color); color: var(--text-secondary);
+        width: 35px; height: 35px; border-radius: 50%; cursor: pointer; font-size: 0.9rem;
+        display: flex; justify-content: center; align-items: center;
+        transition: all 0.2s ease; margin-left: 15px; flex-shrink: 0;
+    }
+    .copy-btn:hover { color: var(--primary-color); border-color: var(--primary-color); }
+
+    /* --- Info Box Style --- */
+    .info-box {
+        width: 100%; max-width: 700px; margin: 30px auto 0 auto; padding: 20px;
+        background-color: rgba(17, 24, 39, 0.7); border: 1px solid var(--border-color);
+        border-radius: 8px; text-align: left; font-size: 0.95rem; line-height: 1.7;
+    }
+    .info-box p { margin-bottom: 15px; color: var(--text-secondary); }
+    .info-box p:last-child { margin-bottom: 0; }
+    .info-box strong { color: var(--text-color); font-weight: 600; }
+    .info-box a {
+        color: var(--primary-color); text-decoration: none; font-weight: 700;
+        border-bottom: 1px dashed var(--primary-color); transition: all 0.2s ease;
+    }
+    .info-box a:hover { color: white; border-bottom-style: solid; }
+    .info-box i { margin-right: 10px; color: var(--primary-color); }
+
+    /* --- UNIFIED FOOTER --- */
+    .page-footer {
+        width: 100%; text-align: center; margin-top: 50px; padding-bottom: 20px;
+    }
+    .page-footer p { color: var(--text-secondary); font-size: 1rem; line-height: 1.7; margin: 15px 0; }
+    .page-footer .support-us { font-size: 0.9rem; margin-top: -10px; }
+    .page-footer .support-us a { color: var(--text-secondary); text-decoration: none; transition: color 0.3s ease; }
+    .page-footer .support-us a:hover { color: var(--primary-color); }
+    
+    .page-footer .social-icons { margin-top: 10px; }
+    .page-footer .social-icons a {
+        color: var(--text-secondary); font-size: 1.8rem; text-decoration: none;
+        margin: 0 10px; transition: color 0.3s ease;
+    }
+    .page-footer .social-icons a:hover { color: var(--primary-color); }
+    
+</style>
 </head>
 <body>
     <canvas id="matrix-canvas"></canvas>
     <div class="background-grid"></div>
-    <div class="container">
-        <header class="main-header">
-            <img src="logo.png" alt="Logo" class="logo">
-            <h1 class="gradient-text">F0rc3Run Panel</h1>
-            <p>Select a service to get configs or endpoints</p>
-        </header>
 
+    <header class="main-header">
+        <img class="logo" src="https://raw.githubusercontent.com/F0rc3Run/F0rc3Run-panel/refs/heads/main/docs/logo.png" alt="Logo">
+        <div>
+          <div class="brand">F0rc3Run Panel</div>
+          <div class="subtitle">⚓️⚓️⚓️</div>
+        </div>
+    </header>
+    
+    <div class="service-container">
+        <h2 class="gradient-text" style="font-size: 2rem; margin-bottom: 10px;">Service Fetcher</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 30px;">Select a service to get configs, endpoints, or load into the panel below</p>
+        
         <div class="protocol-grid" id="protocol-grid">
-            <div class="protocol-card" data-protocol="vless">
+             <div class="protocol-card" data-protocol="vless">
                 <div class="card-content"><i class="fas fa-bolt icon"></i><span>VLESS</span></div>
             </div>
             <div class="protocol-card" data-protocol="trojan">
@@ -47,76 +283,627 @@
         <div class="output-wrapper">
             <div class="output-container" id="output-container">
                 <div class="output-header">
-                    <button class="copy-main-btn" title="Copy Content">
+                    <button class="copy-main-btn" title="Copy Content" style="display: none;">
                         <i class="fa-solid fa-copy"></i>
                     </button>
                     <span id="output-title"></span>
                 </div>
-                <div class="output-body" id="output-body">
-                </div>
+                <div class="output-body" id="output-body"></div>
             </div>
         </div>
     </div>
 
+    <div class="info-box">
+        <p><i class="fa-solid fa-circle-info"></i> The buttons above provide direct links to tested server lists. You can copy these subscription links and import them into supported clients such as <strong>Husi, Nekobox, V2RayNG, NekoRay, v2rayN, Clash</strong>, and others.</p>
+        <p><i class="fa-solid fa-rocket"></i> For the latest <strong>WARP</strong> configurations, please visit our dedicated panel: <a href="https://f0rc3run.github.io/free-warp-endpoints/" target="_blank" rel="noopener noreferrer">WARP Endpoints Panel</a></p>
+    </div>
+
+    <div class="container">
+        <div style="width: 100%; margin: 40px 0 20px 0; border-top: 1px solid var(--border-color);"></div>
+        <aside class="sidebar">
+            <div class="h2">Server Management</div>
+            <div class="field">
+                <label>Raw file URL</label>
+                <input id="rawUrl" placeholder="Click a button above or paste a URL" />
+            </div>
+            <div class="field">
+                <label>Import Servers (Paste Links)</label>
+                <textarea id="serverImport" placeholder="vless://...&#10;vmess://..."></textarea>
+            </div>
+            <div style="display:flex;gap:8px;margin-bottom:12px;">
+                <button class="btn" id="loadBtn">Load From URL</button>
+                <button class="btn ghost" id="importBtn">Add From Text</button>
+            </div>
+            <div class="field">
+                <label>Protocol Filter</label>
+                <div class="filters">
+                    <label class="badge"><input type="checkbox" class="protoChk" value="vmess" checked/> VMess</label>
+                    <label class="badge"><input type="checkbox" class="protoChk" value="vless" checked/> VLESS</label>
+                    <label class="badge"><input type="checkbox" class="protoChk" value="trojan" checked/> Trojan</label>
+                    <label class="badge"><input type="checkbox" class="protoChk" value="ss" checked/> Shadowsocks</label>
+                    <label class="badge"><input type="checkbox" class="protoChk" value="other" checked/> Other</label>
+                </div>
+            </div>
+            <div class="field">
+                <label>Global SNI (for TLS)</label>
+                <input id="sni" placeholder="example.com (leave empty = no change)" />
+            </div>
+            <div class="field">
+                <label>Global Port Override</label>
+                <input id="port" placeholder="e.g. 443 (leave empty = keep original)" />
+            </div>
+            <div class="field">
+                <label>Global DNS</label>
+                <select id="dnsSelect">
+                    <option value="">Default (No Change)</option>
+                    <option value="1.1.1.1,1.0.0.1">Cloudflare</option>
+                    <option value="8.8.8.8,8.8.4.4">Google</option>
+                    <option value="208.67.222.222,208.67.220.220">OpenDNS</option>
+                    <option value="custom">Custom...</option>
+                </select>
+                <input id="dnsCustom" placeholder="Enter custom DNS, e.g. 1.1.1.1" style="display:none; margin-top:8px;" />
+            </div>
+            <div class="field">
+                <label>Country Filter (Name or Emoji)</label>
+                <input id="countryFilter" placeholder="e.g. 🇫🇮 or Finland or NL" />
+            </div>
+            <div style="display:flex;gap:8px;margin-top:6px">
+                <button class="btn" id="applyBtn">Apply Settings</button>
+                <button class="btn ghost small" id="clearBtn">Clear All Servers</button>
+            </div>
+            <div class="footer">
+                <div class="kv">Loaded: <span id="count">0</span></div>
+                <div class="kv">Shown: <span id="shown">0</span></div>
+            </div>
+            <div style="margin-top:12px">
+                <button class="btn ghost download-all" id="downloadAll">Download All Links</button>
+            </div>
+        </aside>
+        <main class="main">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+                <div class="h2">Server List</div>
+                <div style="display:flex;gap:8px;align-items:center">
+                    <div class="small-muted">Sort by:</div>
+                    <select id="sortBy" class="small">
+                        <option value="protocol">Protocol</option>
+                        <option value="country">Country</option>
+                        <option value="name">Name</option>
+                    </select>
+                </div>
+            </div>
+            <div style="margin-top:12px" id="list" class="list"></div>
+        </main>
+    </div>
+
     <footer class="page-footer">
-        <p>
-            Support us with a <i class="fa-solid fa-star"></i> on our
-            <a href="https://github.com/F0rc3Run/F0rc3Run" target="_blank" rel="noopener noreferrer">GitHub page</a>.
+        <p>Created with 🤍 by F0rc3Run</p>
+        <p class="support-us">
+            <a href="https://github.com/F0rc3Run/F0rc3Run" target="_blank" rel="noopener noreferrer">
+                Support us with a 🌟 on GitHub
+            </a>
         </p>
-        <p>
-            For direct configs and updates, follow our
-            <a href="https://t.me/F0rc3Runbot" target="_blank" rel="noopener noreferrer">Telegram bot</a>. <i class="fa-brands fa-telegram"></i>
-        </p>
+        <div class="social-icons">
+            <a href="https://t.me/F0rc3Runbot" target="_blank" rel="noopener noreferrer" title="Telegram">
+                <i class="fa-brands fa-telegram"></i>
+            </a>
+            <a href="https://github.com/F0rc3Run/F0rc3Run" target="_blank" rel="noopener noreferrer" title="GitHub">
+                <i class="fa-brands fa-github"></i>
+            </a>
+        </div>
     </footer>
 
-    <script src="script.js"></script>
-    <script>
-        navigator.sendBeacon("https://panel-loader.endpointcache.workers.dev/log");
-    </script>
-    <script>
-        const canvas = document.getElementById('matrix-canvas');
-        const context = canvas.getContext('2d');
+    <div id="qrModal" style="display:none" class="qr-modal" onclick="hideQR()">
+      <div class="qr-inner" onclick="event.stopPropagation()">
+        <div id="qrHolder"></div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div id="qrLink" style="word-break:break-all;max-width:340px"></div>
+          <div style="display:flex;gap:8px">
+            <button class="btn small" onclick="downloadQR()">Download PNG</button>
+            <button class="btn ghost small" onclick="copyQRLink()">Copy link</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+<script>
+// --- SCRIPT FOR PANEL 1: SERVER MANAGEMENT ---
+const $ = id => document.getElementById(id);
 
-        const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
-        const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        const nums = '0123456789';
-        const alphabet = katakana + latin + nums;
+function detectProtocol(line){
+  const l = line.trim();
+  if(!l) return null;
+  if(/^ss:\/\//i.test(l)) return 'ss';
+  const m = l.match(/^([a-z0-9+]+):\/\//i);
+  if(m) return m[1].toLowerCase();
+  return 'other';
+}
 
-        const fontSize = 16;
-        const columns = canvas.width / fontSize;
+function splitTag(line){
+  const idx = line.lastIndexOf('#');
+  if(idx === -1) return {link: line.trim(), tag: ''};
+  return {link: line.slice(0, idx).trim(), tag: decodeURIComponent(line.slice(idx+1).trim())};
+}
 
-        const rainDrops = [];
-        for (let x = 0; x < columns; x++) {
-            rainDrops[x] = 1;
+let items = [];
+let filtered = [];
+
+async function loadRaw(){
+  const url = $('rawUrl').value.trim();
+  if(!url) { return; }
+  $('loadBtn').innerText = 'Loading...';
+  try{
+    const res = await fetch(url);
+    if(!res.ok) throw new Error('Fetch failed: ' + res.status);
+    const text = await res.text();
+    items = [];
+    parseAndAdd(text);
+  }catch(err){
+    console.error(err);
+    alert('Error loading raw file: ' + err.message);
+  } finally {
+    $('loadBtn').innerText = 'Load From URL';
+  }
+}
+
+function importFromTextarea(){
+    const text = $('serverImport').value.trim();
+    if (!text) { alert('Import box is empty.'); return; }
+    const initialCount = items.length;
+    parseAndAdd(text);
+    const newCount = items.length - initialCount;
+    alert(`${newCount} new servers imported and added to the list.`);
+    $('serverImport').value = '';
+}
+
+function clearAllServers() {
+    if (items.length === 0) {
+        alert("The list is already empty.");
+        return;
+    }
+    if (confirm("Are you sure you want to clear all servers from the list?")) {
+        items = [];
+        filtered = [];
+        applyFiltersAndRender();
+        alert("All servers have been cleared.");
+    }
+}
+
+function parseAndAdd(text){
+  const lines = text.split(/\r?\n/);
+  const maxOriginalIndex = items.length > 0 ? Math.max(...items.map(it => it.originalIndex)) : -1;
+  let currentIndex = maxOriginalIndex + 1;
+
+  for(let i = 0; i < lines.length; i++){
+    let ln = lines[i].trim();
+    if(!ln || ln.startsWith('//') || ln.startsWith('# ') || ln.startsWith(';')) continue;
+    const {link, tag} = splitTag(ln);
+    const proto = detectProtocol(link) || 'other';
+    let host = '', port = '';
+    const hostMatch = link.match(/@?([0-9a-zA-Z\.\-]+):(\d{1,5})/);
+    if(hostMatch){ host = hostMatch[1]; port = hostMatch[2]; }
+    items.push({
+      originalIndex: currentIndex++,
+      orig: ln, rawLink: link, tag: tag, proto, host, port, final: link, meta: {name: tag}
+    });
+  }
+  applyFiltersAndRender();
+}
+
+function applyFiltersAndRender(){
+  const countryQ = $('countryFilter').value.trim().toLowerCase();
+  const protoChecks = Array.from(document.querySelectorAll('.protoChk:checked')).map(i=>i.value);
+  filtered = items.filter(it=>{
+    if(!protoChecks.includes(it.proto)) return false;
+    if(countryQ && !it.tag.toLowerCase().includes(countryQ)) return false;
+    return true;
+  });
+  const sort = $('sortBy').value;
+  filtered.sort((a,b)=>{
+    if(sort==='protocol') return a.proto.localeCompare(b.proto);
+    if(sort==='country') return (a.tag||'').localeCompare(b.tag||'');
+    return (a.tag||'').localeCompare(b.tag||'');
+  });
+  $('count').innerText = items.length;
+  $('shown').innerText = filtered.length;
+  renderList();
+}
+
+function renderList(){
+  const list = $('list');
+  if (!list) return;
+  list.innerHTML = '';
+  for(let it of filtered){
+    const c = document.createElement('div');
+    c.className = 'card';
+    c.innerHTML = `
+      <div class="row-between">
+        <div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <div class="protocol-pill protocol-${it.proto}">${it.proto.toUpperCase()}</div>
+            <div style="font-weight:700">${escapeHtml(it.tag || 'Unnamed Server')}</div>
+          </div>
+          <div class="meta">${escapeHtml(it.host)} ${it.port?(':'+it.port):''}</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <button class="ctrl-btn" onclick='showFinal(${it.originalIndex})'>Show Final</button>
+        <button class="ctrl-btn" onclick='previewQR(${it.originalIndex})'>QR Code</button>
+        <button class="ctrl-btn" onclick='copyFinal(${it.originalIndex})'>Copy</button>
+      </div>
+      <div style="margin-top:8px; word-break:break-all; display:none;" id="final-${it.originalIndex}" class="small-muted"></div>`;
+    list.appendChild(c);
+  }
+}
+
+function escapeHtml(s){ return s ? s.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;') : ''; }
+function findItemByOriginalIndex(idx) { return items.find(item => item.originalIndex === idx); }
+function showFinal(idx){
+  const item = findItemByOriginalIndex(idx);
+  if (!item) return;
+  const el = $('final-'+idx);
+  el.innerText = item.final;
+  el.style.display = el.style.display === 'block' ? 'none' : 'block';
+}
+function copyFinal(idx){
+  const item = findItemByOriginalIndex(idx);
+  if (!item) return;
+  navigator.clipboard.writeText(item.final).then(()=>{ alert('Copied!'); },(e)=> alert('Copy failed: '+e));
+}
+
+async function applySettings(){
+  const dnsSelect = $('dnsSelect').value;
+  let dns = (dnsSelect === 'custom') ? $('dnsCustom').value.trim() : dnsSelect;
+  const sni = $('sni').value.trim();
+  const port = $('port').value.trim();
+  $('applyBtn').innerText='Applying...';
+  await new Promise(r => setTimeout(r, 50));
+  for(let i=0;i<items.length;i++){
+    try{
+      items[i].final = await applyToLink(items[i].rawLink, items[i].proto, {sni, port, dns});
+    }catch(e){
+      console.warn('apply failed', e);
+      items[i].final = items[i].rawLink;
+    }
+  }
+  applyFiltersAndRender();
+  $('applyBtn').innerText='Apply Settings';
+  alert('Settings applied.');
+}
+
+async function applyToLink(link, proto, opts){
+  const {sni, port, dns} = opts;
+  if(proto === 'trojan' || proto === 'vless'){
+    try{
+      const url = new URL(link);
+      if(sni) url.searchParams.set('sni', sni);
+      if(port) url.port = port;
+      if(dns) url.searchParams.set('x-dns', dns);
+      return url.toString();
+    }catch(e){
+      let newLink = link;
+      const hasQuery = newLink.includes('?');
+      if (sni) newLink += (hasQuery || newLink.includes('&') ? '&' : '?') + `sni=${encodeURIComponent(sni)}`;
+      if (dns) newLink += (newLink.includes('?') || newLink.includes('&') ? '&' : '?') + `x-dns=${encodeURIComponent(dns)}`;
+      return newLink;
+    }
+  }
+  if(proto === 'vmess'){
+    try{
+      const b = link.replace(/^vmess:\/\//i,'');
+      const jsonStr = atob(b);
+      const obj = JSON.parse(jsonStr);
+      if(port) obj.port = String(port);
+      if(sni) obj.sni = sni;
+      if(dns) obj['x-dns'] = dns;
+      const outB = btoa(JSON.stringify(obj));
+      const tag = link.includes('#') ? '#' + link.split('#').slice(1).join('#') : '';
+      return 'vmess://' + outB + tag;
+    }catch(e){ return link; }
+  }
+  if(proto === 'ss'){
+     try {
+        const url = new URL(link);
+        if (port) url.port = port;
+        if (sni) url.searchParams.set('plugin', `obfs-local;obfs=tls;obfs-host=${sni}`);
+        if (dns) url.searchParams.set('x-dns', dns);
+        return url.toString();
+    } catch (e) {
+        let finalLink = link;
+        if (port && /@[^:]+:\d+/.test(finalLink)) {
+            finalLink = finalLink.replace(/(@[^:]+:)\d+/, `$1${port}`);
         }
+        return finalLink;
+    }
+  }
+  return link;
+}
 
-        const draw = () => {
-            context.fillStyle = 'rgba(17, 24, 39, 0.05)';
-            context.fillRect(0, 0, canvas.width, canvas.height);
+let currentQR = {link:'', idx:null};
+function previewQR(idx){
+  const it = findItemByOriginalIndex(idx);
+  if (!it) return;
+  currentQR = {link: it.final, idx};
+  $('qrModal').style.display = 'flex';
+  $('qrHolder').innerHTML = '';
+  new QRCode($('qrHolder'), {text: it.final, width:200, height:200, colorDark: "#e6eef8", colorLight: "#0b0f14"});
+  $('qrLink').innerText = it.final;
+}
+function hideQR(){ $('qrModal').style.display = 'none'; $('qrHolder').innerHTML = ''; }
+function copyQRLink(){
+  if(!currentQR.link) return;
+  navigator.clipboard.writeText(currentQR.link).then(()=>{ alert('Copied link!'); });
+}
+function downloadQR(){
+  const holder = $('qrHolder');
+  const img = holder.querySelector('img') || holder.querySelector('canvas');
+  if(!img) return alert('QR not ready');
+  let dataurl = (img.tagName.toLowerCase() === 'img') ? img.src : img.toDataURL('image/png');
+  const a = document.createElement('a');
+  a.href = dataurl;
+  const item = findItemByOriginalIndex(currentQR.idx);
+  a.download = `qr-${(item.tag || 'server')}.png`;
+  a.click();
+}
+function downloadAll(){
+  const lines = filtered.map(it => it.final + (it.tag ? (' #' + it.tag) : ''));
+  const blob = new Blob([lines.join('\n')], {type:'text/plain;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `vpn-panel-links.txt`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
 
-            context.fillStyle = '#6d28d9';
-            context.font = fontSize + 'px monospace';
+// Panel 1 Event Bindings
+if($('loadBtn')) $('loadBtn').addEventListener('click', loadRaw);
+if($('importBtn')) $('importBtn').addEventListener('click', importFromTextarea);
+if($('applyBtn')) $('applyBtn').addEventListener('click', applySettings);
+if($('clearBtn')) $('clearBtn').addEventListener('click', clearAllServers);
+if($('countryFilter')) $('countryFilter').addEventListener('input', ()=>applyFiltersAndRender());
+document.querySelectorAll('.protoChk').forEach(ch => ch.addEventListener('change', applyFiltersAndRender));
+if($('sortBy')) $('sortBy').addEventListener('change', applyFiltersAndRender);
+if($('downloadAll')) $('downloadAll').addEventListener('click', downloadAll);
+if($('dnsSelect')) $('dnsSelect').addEventListener('change', (e) => {
+    const dnsCustom = $('dnsCustom');
+    if (dnsCustom) dnsCustom.style.display = (e.target.value === 'custom') ? 'block' : 'none';
+});
+if(document.querySelector('.main-header .logo')) document.querySelector('.main-header .logo').addEventListener('click', () => {
+    const kiss = document.createElement('div');
+    kiss.innerHTML = '😘';
+    kiss.className = 'kiss-animation';
+    document.body.appendChild(kiss);
+    kiss.addEventListener('animationend', () => { kiss.remove(); });
+});
 
-            for (let i = 0; i < rainDrops.length; i++) {
-                const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
-                context.fillText(text, i * fontSize, rainDrops[i] * fontSize);
 
-                if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                    rainDrops[i] = 0;
-                }
-                rainDrops[i]++;
+// --- SCRIPT FOR PANEL 2: SERVICE FETCHER ---
+document.addEventListener('DOMContentLoaded', () => {
+    const protocolGrid = document.getElementById('protocol-grid');
+    if (!protocolGrid) return; 
+
+    const outputContainer = document.getElementById('output-container');
+    const outputTitle = document.getElementById('output-title');
+    const outputBody = document.getElementById('output-body');
+    const copyMainBtn = document.querySelector('.copy-main-btn');
+    
+    let isProcessing = false;
+    let currentContentToCopy = '';
+
+    const protocols = {
+        vless: { type: 'show_url', url: 'https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/main/splitted-by-protocol/vless/vless_part1.txt' },
+        trojan: { type: 'show_url', url: 'https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/main/splitted-by-protocol/trojan/trojan_part1.txt' },
+        ss: { type: 'show_url', url: 'https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/main/splitted-by-protocol/ss/ss.txt' },
+        telenodes: { type: 'show_url', url: 'https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/main/Special/Telegram.txt' },
+        mixprotocol: { type: 'show_url', url: 'https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/main/splitted-by-country/XX.txt' },
+        sstp: { type: 'random_sstp', url: 'https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/main/sstp-configs/sstp_with_country.txt' }
+    };
+    const resultsUrl = 'https://raw.githubusercontent.com/F0rc3Run/free-warp-endpoints/main/docs/results.json'; 
+    let allEndpoints = [];
+    
+    async function fetchAllEndpoints() {
+        try {
+            const response = await fetch(`${resultsUrl}?v=${new Date().getTime()}`);
+            if (!response.ok) throw new Error('Could not fetch results file.');
+            const data = await response.json();
+            allEndpoints = [...(data.ipv4 || []), ...(data.ipv6 || [])];
+        } catch (error) {
+            console.error(`Error fetching endpoint list: ${error.message}`);
+        }
+    }
+    
+    function showOutputContainer(title) {
+        outputContainer.style.display = 'block';
+        outputTitle.textContent = title;
+        outputBody.innerHTML = ''; 
+    }
+    
+    function startLoading(card) {
+        isProcessing = true;
+        const icon = card.querySelector('.icon');
+        if(icon) icon.classList.add('processing');
+    }
+
+    function stopLoading(card) {
+        isProcessing = false;
+        const icon = card.querySelector('.icon');
+        if(icon) icon.classList.remove('processing');
+    }
+
+    function typeEffect(element, text, callback) {
+        let i = 0;
+        element.innerHTML = "";
+        element.classList.add('typing-cursor');
+        const interval = setInterval(() => {
+            if (i < text.length) {
+                element.textContent += text.charAt(i);
+                i++;
+            } else {
+                clearInterval(interval);
+                element.classList.remove('typing-cursor');
+                if (callback) callback();
             }
-        };
+        }, 50); 
+    }
+    
+    async function handleProtocolClick(protocolKey, card) {
+        startLoading(card);
+        const protocol = protocols[protocolKey];
+        showOutputContainer(`Result for ${protocolKey.toUpperCase()}`);
+        
+        if (protocol.type === 'show_url') {
+            outputBody.innerHTML = `<pre></pre>`;
+            const preElement = outputBody.querySelector('pre');
+            const content = protocol.url;
 
-        setInterval(draw, 30);
+            currentContentToCopy = content;
+            copyMainBtn.style.display = 'block';
 
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            typeEffect(preElement, content, () => stopLoading(card));
+            
+            if ($('rawUrl')) $('rawUrl').value = content;
+            if (typeof loadRaw === 'function') loadRaw();
+
+
+        } else if (protocol.type === 'random_sstp') {
+            copyMainBtn.style.display = 'none';
+            outputTitle.textContent = 'SSTP Server Info';
+            try {
+                const response = await fetch(`${protocol.url}?v=${new Date().getTime()}`);
+                const textContent = await response.text();
+                const lines = textContent.split('\n').filter(line => line.trim() !== '');
+
+                if (lines.length > 0) {
+                    const randomLine = lines[Math.floor(Math.random() * lines.length)];
+                    let serverInfo = randomLine.split(',')[0].trim();
+                    if (serverInfo.includes('|')) serverInfo = serverInfo.split('|')[1].trim();
+                    const [hostname, port] = serverInfo.split(':');
+                    
+                    outputBody.innerHTML = `
+                        <div class="sstp-details-list">
+                            <div class="sstp-detail-item"><span class="label">Hostname:</span><span class="value" id="sstp-hostname"></span><button class="copy-btn" data-copy="${hostname}" title="Copy"><i class="fa-solid fa-copy"></i></button></div>
+                            <div class="sstp-detail-item"><span class="label">Port:</span><span class="value" id="sstp-port"></span><button class="copy-btn" data-copy="${port}" title="Copy"><i class="fa-solid fa-copy"></i></button></div>
+                            <div class="sstp-detail-item"><span class="label">Username:</span><span class="value" id="sstp-user"></span><button class="copy-btn" data-copy="vpn" title="Copy"><i class="fa-solid fa-copy"></i></button></div>
+                            <div class="sstp-detail-item"><span class="label">Password:</span><span class="value" id="sstp-pass"></span><button class="copy-btn" data-copy="vpn" title="Copy"><i class="fa-solid fa-copy"></i></button></div>
+                        </div>`;
+                    
+                    const hostEl = document.getElementById('sstp-hostname');
+                    const portEl = document.getElementById('sstp-port');
+                    const userEl = document.getElementById('sstp-user');
+                    const passEl = document.getElementById('sstp-pass');
+
+                    typeEffect(hostEl, hostname, () => typeEffect(portEl, port, () => typeEffect(userEl, 'vpn', () => typeEffect(passEl, 'vpn', () => stopLoading(card)))));
+                } else {
+                    outputBody.innerHTML = `<p>SSTP server list is empty.</p>`;
+                    stopLoading(card);
+                }
+            } catch (error) {
+                outputBody.innerHTML = `<p>Error fetching SSTP server info.</p>`;
+                stopLoading(card);
+            }
+        }
+    }
+
+    function handleEndpointClick(card) {
+        startLoading(card);
+        copyMainBtn.style.display = 'none';
+        showOutputContainer('Suggested Endpoints');
+        if (allEndpoints.length === 0) {
+            alert('Server list is not loaded yet. Please wait a moment and try again.');
+            stopLoading(card);
+            return;
+        }
+        const randomEndpoints = [...allEndpoints].sort(() => 0.5 - Math.random()).slice(0, 5);
+        if (randomEndpoints.length > 0) {
+            const list = document.createElement('div');
+            list.className = 'endpoint-results-list';
+            randomEndpoints.forEach((endpoint) => {
+                const item = document.createElement('div');
+                item.className = 'endpoint-item';
+                item.innerHTML = `
+                    <div class="icon-wrapper"><i class="fa-solid fa-server"></i></div>
+                    <div class="details"><span class="endpoint-ip">${endpoint}</span></div>
+                    <button class="copy-btn" data-copy="${endpoint}" title="Copy"><i class="fa-solid fa-copy"></i></button>`;
+                list.appendChild(item);
+            });
+            outputBody.appendChild(list);
+        } else {
+            outputBody.innerHTML = `<p>No endpoints found to display.</p>`;
+        }
+        stopLoading(card);
+    }
+
+    // Panel 2 Event Bindings
+    protocolGrid.addEventListener('click', (event) => {
+        if (isProcessing) return;
+        const card = event.target.closest('.protocol-card');
+        if (!card) return;
+        if (card.id === 'get-endpoints-btn') {
+            handleEndpointClick(card);
+        } else if (card.dataset.protocol) {
+            handleProtocolClick(card.dataset.protocol, card);
+        }
+    });
+    
+    if (outputBody) outputBody.addEventListener('click', (event) => {
+        const copyBtn = event.target.closest('.copy-btn');
+        if (!copyBtn) return;
+        const textToCopy = copyBtn.dataset.copy;
+        navigator.clipboard.writeText(textToCopy).then(() => {
+            const icon = copyBtn.querySelector('i');
+            icon.classList.remove('fa-copy'); icon.classList.add('fa-check');
+            setTimeout(() => { icon.classList.remove('fa-check'); icon.classList.add('fa-copy'); }, 1500);
         });
-    </script>
+    });
+
+    if (copyMainBtn) copyMainBtn.addEventListener('click', () => {
+        if (!currentContentToCopy) return;
+        navigator.clipboard.writeText(currentContentToCopy).then(() => {
+            const icon = copyMainBtn.querySelector('i');
+            icon.classList.remove('fa-copy'); icon.classList.add('fa-check');
+            setTimeout(() => { icon.classList.remove('fa-check'); icon.classList.add('fa-copy'); }, 1500);
+        });
+    });
+
+    fetchAllEndpoints();
+});
+
+
+// --- UNIFIED MATRIX BACKGROUND SCRIPT ---
+const canvas = document.getElementById('matrix-canvas');
+const context = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+const alphabet = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッンABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+const fontSize = 16;
+const columns = canvas.width / fontSize;
+const rainDrops = [];
+for (let x = 0; x < columns; x++) { rainDrops[x] = 1; }
+
+const draw = () => {
+    context.fillStyle = 'rgba(17, 24, 39, 0.05)';
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.fillStyle = '#6d28d9';
+    context.font = fontSize + 'px monospace';
+    for (let i = 0; i < rainDrops.length; i++) {
+        const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+        context.fillText(text, i * fontSize, rainDrops[i] * fontSize);
+        if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+            rainDrops[i] = 0;
+        }
+        rainDrops[i]++;
+    }
+};
+const matrixInterval = setInterval(draw, 33);
+window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+});
+
+// Beacon
+if(navigator.sendBeacon) {
+    navigator.sendBeacon("https://panel-loader.endpointcache.workers.dev/log");
+}
+</script>
+
 </body>
 </html>
