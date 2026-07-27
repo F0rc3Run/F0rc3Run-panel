@@ -5,10 +5,10 @@
 </p>
 
 <p align="center">
-  <a href="https://vpn.free.nf/" target="_blank">🌐 Web Panel</a> •
-  <a href="https://t.me/testnghvfbot" target="_blank">🤖 Telegram Bot</a> •
-  <a href="https://t.me/test2067" target="_blank">📢 Telegram Channel</a> •
-  <a href="https://github.com/YOUR-GITHUB-USERNAME" target="_blank">⭐ GitHub</a>
+  <a href="https://f0rc3run.github.io/F0rc3Run-panel" target="_blank">🌐 Web Panel</a> •
+  <a href="https://t.me/F0rc3Runbot" target="_blank">🤖 Telegram Bot</a> •
+  <a href="https://t.me/ForceRunVPN" target="_blank">📢 Telegram Channel</a> •
+  <a href="https://github.com/F0rc3Run/F0rc3Run" target="_blank">⭐ GitHub</a>
 </p>
 
 ---
@@ -21,10 +21,10 @@ ForceRun-Panel is a free VPN subscription service built for people in countries 
 
 ## 🚀 How to get a subscription link
 
-1. Open the bot: **[@testnghvfbot](https://t.me/testnghvfbot)** and send `/start`
-2. Tap **🔑 Get Token** (you'll be asked to join **[@test2067](https://t.me/test2067)** if you haven't already)
+1. Open the bot: **[@F0rc3Runbot](https://t.me/F0rc3Runbot)** and send `/start`
+2. Tap **🔑 Get Token** (you'll be asked to join **[@ForceRunVPN](https://t.me/ForceRunVPN)** if you haven't already)
 3. Copy the token the bot sends you
-4. Open the **[web panel](https://vpn.free.nf/)** and paste it in
+4. Open the **[web panel](https://f0rc3run.github.io/F0rc3Run-panel)** and paste it in
 5. Filter by protocol, country, port and format (Clash or V2Ray) — a live count shows how many servers match
 6. Tap **Get subscription link** and import it into your app
 
@@ -59,10 +59,10 @@ The bot's **📱 Recommended Apps** menu links straight to official downloads, p
 ## 🛠️ How it's built
 
 ```
-Go proxy tester  →  GitHub Actions (every 6h)  →  Cloudflare R2
+Go proxy tester  →  GitHub Actions (every 6h)  →  Cloudflare
                                                           │
                                                           ▼
-                                      Cloudflare Worker (Telegram bot + API)
+                                      Cloudflare Worker
                                                           │
                                                           ▼
                                               Web panel (login, filters, link)
@@ -90,5 +90,3 @@ Licensed under the **FFAL – Free For All License**
 🔗 [View License](https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/LICENSE)
 
 ---
-
-<p align="center"><strong>✊️ Together, we fight for free internet access!</strong></p>
