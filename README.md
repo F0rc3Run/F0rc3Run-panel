@@ -62,7 +62,7 @@ The bot's **📱 Recommended Apps** menu links straight to official downloads, p
 Go proxy tester  →  GitHub Actions (every 6h)  →  Cloudflare
                                                           │
                                                           ▼
-                                      Cloudflare Worker
+                                                  Cloudflare Worker
                                                           │
                                                           ▼
                                               Web panel (login, filters, link)
