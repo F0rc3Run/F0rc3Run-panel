@@ -72,7 +72,7 @@ The testing script goes through several stages for every candidate server:
 
 1. **Connect** — a real connection is opened through the proxy itself (not just a ping), so what gets tested is exactly what your app would experience.
 2. **Alive check** — confirms the proxy actually passes traffic.
-3. **Security checks** — TLS handshake, HTTPS behavior, certificate validity, and an IP/DNS leak test to make sure the proxy doesn't expose your real IP.
+3. **Security checks** — TLS handshake, HTTPS behavior, certificate validity.
 4. **Status classification**, based on how many of those checks pass:
    - **✅ VERIFIED** — passes every security check.
    - **⚠️ WARNING** — passes most checks, one or two minor issues.
